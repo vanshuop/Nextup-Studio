@@ -11,19 +11,6 @@
   --sidebar-active-bg: #00bcd4;
   --sidebar-active-text: #121212;
 }
-.light {
-  --bg-color: #f9f9f9;
-  --text-color: #121212;
-  --accent-color: #007b91;
-  --btn-bg: #007b91;
-  --btn-text: #f9f9f9;
-  --btn-hover-bg: #005f6a;
-  --popup-bg: #ddd;
-  --sidebar-bg: #eaeaea;
-  --sidebar-text: #121212;
-  --sidebar-active-bg: #007b91;
-  --sidebar-active-text: #f9f9f9;
-}
 * {
   margin: 0;
   padding: 0;
@@ -43,6 +30,8 @@ body {
   flex: 1;
   min-height: 100vh;
 }
+
+/* SIDEBAR */
 .sidebar {
   width: 220px;
   background-color: var(--sidebar-bg);
@@ -56,6 +45,7 @@ body {
   bottom: 0;
   left: 0;
   overflow-y: auto;
+  overflow-x: hidden;
   transition: background-color 0.4s;
   z-index: 1000;
 }
@@ -82,6 +72,8 @@ body {
   color: var(--sidebar-active-text);
   font-weight: 700;
 }
+
+/* MAIN CONTENT */
 .main-content {
   margin-left: 220px;
   padding: 40px 30px;
@@ -113,36 +105,94 @@ ul li {
 strong {
   color: var(--accent-color);
 }
-.social-buttons {
-  margin-top: auto;
+
+/* SOCIAL BUTTONS (horizontal on desktop, vertical on mobile) */
+.social-buttons.horizontal-social {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
+  flex-direction: row;
+  gap: 18px;
+  justify-content: center;
+  margin-top: 35px;
+  margin-bottom: 24px;
 }
-.social-buttons a {
-  display: flex;
+.social-buttons.horizontal-social a {
+  flex: 1 1 auto;
+  min-width: 140px;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
-  padding: 14px 24px;
+  display: flex;
+  gap: 8px;
+  padding: 14px 0;
   border-radius: 30px;
   font-weight: 700;
   font-size: 17px;
   text-decoration: none;
   color: #fff;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-  transition: transform 0.3s, opacity 0.3s;
-  user-select: none;
-  width: 260px;
-  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.13);
+  transition: transform 0.22s, opacity 0.22s, box-shadow 0.22s;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
-.social-buttons a:hover {
-  transform: scale(1.07);
-  opacity: 0.85;
+.social-buttons.horizontal-social a:hover, .social-buttons.horizontal-social a:focus {
+  opacity: 0.89;
+  transform: scale(1.05);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.18);
 }
 .whatsapp { background-color: #25d366; }
-.youtube { background-color: #ff0000; }
+.youtube  { background-color: #ff0000; }
 .instagram { background-color: #e1306c; }
+
+@media (max-width: 700px) {
+  .social-buttons.horizontal-social {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 30px;
+  }
+  .social-buttons.horizontal-social a {
+    width: 100%;
+    max-width: none;
+    font-size: 16px;
+    padding: 14px 0;
+  }
+}
+
+/* NOTIFICATION POPUP (3 seconds only) */
+@keyframes fadeout {
+  0% { opacity: 1; }
+  70% { opacity: 1; }
+  100% { opacity: 0; }
+}
+.popup {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  background-color: var(--popup-bg);
+  color: var(--text-color);
+  padding: 20px 24px;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+  z-index: 9999;
+  animation: fadeout 3s forwards;
+  font-weight: 600;
+  max-width: 320px;
+  user-select: none;
+}
+.popup a {
+  color: var(--accent-color);
+  text-decoration: underline;
+}
+@media (max-width: 768px) {
+  .popup {
+    right: 10px;
+    left: 10px;
+    bottom: 20px;
+    max-width: none;
+    padding: 15px 18px;
+  }
+}
+
+/* MODERN BUTTONS (for games, quizzes etc) */
 button, 
 .main-content button, 
 #gameChoice button, 
@@ -172,6 +222,37 @@ button:hover,
   color: #fff;
   transform: scale(1.03);
 }
+
+/* ENHANCED QUIZ GAME BUTTONS */
+.quiz-answer {
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  border-radius: 28px;
+  margin: 10px 0;
+  padding: 13px 18px;
+  font-size: 1.08rem;
+  transition: background 0.22s, color 0.18s;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.quiz-answer.correct {
+  background: #17ba37 !important;
+  color: #fff !important;
+  font-weight: bold;
+}
+.quiz-answer.incorrect {
+  background: #e84848 !important;
+  color: #fff !important;
+  font-weight: bold;
+}
+.quiz-answer .indicator {
+  font-size: 1.4em;
+  margin-left: 12px;
+}
+
+/* Additional Utility Classes */
+.hide { display: none !important; }
 .secret-link {
   text-align: center;
   margin-top: 50px;
@@ -188,43 +269,8 @@ button:hover,
   text-decoration: underline;
   opacity: 0.6;
 }
-.popup {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: var(--popup-bg);
-  color: var(--text-color);
-  padding: 20px 24px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-  z-index: 9999;
-  animation: fadeout 12s forwards;
-  font-weight: 600;
-  max-width: 320px;
-  user-select: none;
-}
-.popup a {
-  color: var(--accent-color);
-  text-decoration: underline;
-}
-@keyframes fadeout {
-  0% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { opacity: 0; }
-}
-.file-block {
-  background: rgba(255,255,255,0.05);
-  padding: 18px;
-  margin: 18px 0;
-  border-radius: 8px;
-  word-wrap: break-word;
-}
-.file-block strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--accent-color);
-}
-/* Floating Music Play/Pause Audio Button */
+
+/* Floating Play Button */
 .audio-button {
   position: fixed;
   bottom: 20px;
@@ -262,19 +308,25 @@ button:hover,
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    flex-wrap: nowrap;
+    flex-wrap: wrap; /* allow wrapping on small screen */
     overflow-x: auto;
-    padding: 0 10px;
+    overflow-y: hidden;
+    padding: 0 5px;
     z-index: 1000;
     background: var(--sidebar-bg);
+    scrollbar-width: none;
+  }
+  .sidebar::-webkit-scrollbar {
+    display: none;
   }
   .sidebar h2 { display: none; }
   .sidebar a {
-    margin: 0 8px;
-    padding: 8px 14px;
+    margin: 0 6px;
+    padding: 8px 12px;
     font-size: 14px;
     white-space: nowrap;
     border-radius: 20px;
+    flex-shrink: 0;
   }
   .main-content {
     margin-left: 0;
@@ -282,18 +334,16 @@ button:hover,
     padding: 20px 10px;
     max-width: 100%;
   }
-  .social-buttons a {
-    width: 180px;
-    font-size: 15px;
-    padding: 12px 20px;
-    justify-content: center;
+  .social-buttons.horizontal-social {
+    flex-direction: column;
+    gap: 14px;
+    margin-top: 30px;
   }
-  .popup {
-    right: 10px;
-    left: 10px;
-    bottom: 20px;
+  .social-buttons.horizontal-social a {
+    width: 100%;
     max-width: none;
-    padding: 15px 18px;
+    font-size: 16px;
+    padding: 14px 0;
   }
   .audio-button {
     width: 40px;
@@ -316,9 +366,5 @@ button:hover,
   .main-content hr {
     margin-left: 0;
     margin-right: 0;
-  }
-  .file-block {
-    padding: 12px;
-    margin: 10px 0;
   }
 }
