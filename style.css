@@ -164,18 +164,9 @@ strong {
   opacity: 0.85;
 }
 
-/* Specific colors */
-.whatsapp {
-  background-color: #25d366;
-}
-
-.youtube {
-  background-color: #ff0000;
-}
-
-.instagram {
-  background-color: #e1306c;
-}
+.whatsapp { background-color: #25d366; }
+.youtube { background-color: #ff0000; }
+.instagram { background-color: #e1306c; }
 
 /* Music Controls */
 #musicControl {
@@ -211,7 +202,6 @@ strong {
   text-align: center;
   user-select: none;
 }
-
 #usernameInput {
   padding: 12px 18px;
   border-radius: 10px;
@@ -224,11 +214,9 @@ strong {
   background: var(--sidebar-bg);
   color: var(--text-color);
 }
-
 #usernameInput:focus {
   border-color: var(--btn-hover-bg);
 }
-
 #setUsernameBtn {
   padding: 12px 24px;
   border: none;
@@ -240,13 +228,10 @@ strong {
   transition: opacity 0.25s ease, transform 0.25s ease;
   user-select: none;
 }
-
 #setUsernameBtn:hover {
   opacity: 0.9;
   transform: scale(1.05);
 }
-
-/* Welcome user display */
 #welcomeUser {
   text-align: center;
   margin-top: 25px;
@@ -255,13 +240,10 @@ strong {
   font-size: 1.2rem;
   user-select: none;
 }
-
-/* Logout button container */
 #logoutContainer {
   text-align: center;
   margin-top: 20px;
 }
-
 #logoutBtn {
   padding: 12px 26px;
   border: none;
@@ -273,13 +255,11 @@ strong {
   transition: opacity 0.3s ease, transform 0.3s ease;
   user-select: none;
 }
-
 #logoutBtn:hover {
   opacity: 0.85;
   transform: scale(1.05);
 }
 
-/* Popup Notification */
 .popup {
   position: fixed;
   bottom: 30px;
@@ -295,25 +275,15 @@ strong {
   max-width: 320px;
   user-select: none;
 }
-
 .popup a {
   color: var(--accent-color);
   text-decoration: underline;
 }
-
 @keyframes fadeout {
-  0% {
-    opacity: 1;
-  }
-  85% {
-    opacity: 1;
-  }
-  100% {
-    opacity: 0;
-  }
+  0% { opacity: 1; }
+  85% { opacity: 1; }
+  100% { opacity: 0; }
 }
-
-/* Secret Link */
 .secret-link {
   text-align: center;
   margin-top: 50px;
@@ -321,26 +291,70 @@ strong {
   opacity: 0.35;
   user-select: none;
 }
-
 .secret-link a {
   color: inherit;
   text-decoration: none;
   cursor: pointer;
 }
-
 .secret-link a:hover {
   text-decoration: underline;
   opacity: 0.6;
 }
-
-/* Google login container */
 .google-login {
   display: flex;
   justify-content: center;
   margin-top: 38px;
 }
 
-/* Light/Dark toggle button */
+/* Modern, rounded, colored BUTTONS everywhere */
+button, 
+.main-content button, 
+#gameChoice button, 
+#gameContainer button, 
+#leaderboard button {
+  padding: 14px 0;
+  margin-bottom: 12px;
+  border: none;
+  border-radius: 30px;
+  background: var(--btn-bg);
+  color: var(--btn-text);
+  font-weight: 700;
+  font-size: 17px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+  transition: background 0.3s, color 0.3s, transform 0.2s;
+  user-select: none;
+  cursor: pointer;
+  width: 100%;
+  min-width: 0;
+  margin-left: 0;
+  margin-right: 0;
+  outline: none;
+}
+
+button:hover, 
+.main-content button:hover,
+#gameChoice button:hover,
+#gameContainer button:hover, 
+#leaderboard button:hover {
+  background: var(--btn-hover-bg);
+  color: #fff;
+  transform: scale(1.03);
+}
+
+.file-block {
+  background: rgba(255, 255, 255, 0.05);
+  padding: 18px;
+  margin: 18px 0;
+  border-radius: 8px;
+  word-wrap: break-word;
+}
+.file-block strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--accent-color);
+}
+
+/* Theme Toggle (Sun/Moon) */
 #themeToggle {
   position: fixed;
   top: 18px;
@@ -354,27 +368,7 @@ strong {
   transition: color 0.3s ease, top 0.3s ease;
 }
 
-/* Buttons in games page should wrap correctly */
-.main-content button, #gameChoice button, #gameContainer button, #leaderboard button {
-  min-width: 120px;
-  margin-bottom: 12px;
-}
-
-.file-block {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 18px;
-  margin: 18px 0;
-  border-radius: 8px;
-  word-wrap: break-word;
-}
-
-.file-block strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--accent-color);
-}
-
-/* Responsive Styles */
+/* RESPONSIVE STYLES - For Mobile/Tablet */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -433,18 +427,18 @@ strong {
     padding: 15px 18px;
   }
   #themeToggle {
-    top: 75px; /* positions toggle below sidebar on mobile */
+    top: 75px;
     right: 18px;
     font-size: 26px;
   }
-  /* All game page buttons 100% width on mobile */
-  .main-content button, #gameChoice button, #gameContainer button, #leaderboard button {
+  button, 
+  .main-content button, 
+  #gameChoice button, 
+  #gameContainer button, 
+  #leaderboard button {
     width: 100% !important;
-    margin-left: 0 !important;
-    margin-right: 0 !important;
-    min-width: 0 !important;
-    max-width: 100%;
-    box-sizing: border-box;
+    font-size: 16px;
+    min-width: 0;
   }
   .main-content hr {
     margin-left: 0;
