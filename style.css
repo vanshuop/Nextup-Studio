@@ -345,21 +345,21 @@ strong {
   position: fixed;
   top: 18px;
   right: 18px;
+  z-index: 11000;
+  font-size: 28px;
   background: transparent;
   border: none;
-  font-size: 28px;
-  cursor: pointer;
   color: var(--accent-color);
-  transition: color 0.3s ease;
-  user-select: none;
-  z-index: 11000;
+  cursor: pointer;
+  transition: color 0.3s ease, top 0.3s ease;
 }
 
-#themeToggle:hover {
-  color: var(--btn-hover-bg);
+/* Buttons in games page should wrap correctly */
+.main-content button, #gameChoice button, #gameContainer button, #leaderboard button {
+  min-width: 120px;
+  margin-bottom: 12px;
 }
 
-/* Game & Vault extra blocks for wider consistency */
 .file-block {
   background: rgba(255, 255, 255, 0.05);
   padding: 18px;
@@ -374,7 +374,7 @@ strong {
   color: var(--accent-color);
 }
 
-/* Responsive */
+/* Responsive Styles */
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -433,9 +433,22 @@ strong {
     padding: 15px 18px;
   }
   #themeToggle {
-    top: 12px;
-    right: 12px;
-    font-size: 24px;
+    top: 75px; /* positions toggle below sidebar on mobile */
+    right: 18px;
+    font-size: 26px;
+  }
+  /* All game page buttons 100% width on mobile */
+  .main-content button, #gameChoice button, #gameContainer button, #leaderboard button {
+    width: 100% !important;
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+    min-width: 0 !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+  .main-content hr {
+    margin-left: 0;
+    margin-right: 0;
   }
   .file-block {
     padding: 12px;
