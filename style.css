@@ -11,7 +11,6 @@
   --sidebar-active-bg: #00bcd4;
   --sidebar-active-text: #121212;
 }
-
 .light {
   --bg-color: #f9f9f9;
   --text-color: #121212;
@@ -25,13 +24,11 @@
   --sidebar-active-bg: #007b91;
   --sidebar-active-text: #f9f9f9;
 }
-
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: var(--bg-color);
@@ -41,13 +38,11 @@ body {
   display: flex;
   flex-direction: column;
 }
-
 .layout {
   display: flex;
   flex: 1;
   min-height: 100vh;
 }
-
 .sidebar {
   width: 220px;
   background-color: var(--sidebar-bg);
@@ -171,7 +166,6 @@ strong {
   background-color: var(--btn-hover-bg);
   transform: scale(1.05);
 }
-
 button, 
 .main-content button, 
 #gameChoice button, 
@@ -201,7 +195,6 @@ button:hover,
   color: #fff;
   transform: scale(1.03);
 }
-
 .secret-link {
   text-align: center;
   margin-top: 50px;
@@ -261,9 +254,9 @@ button:hover,
 }
 /* Sun/Moon Theme Toggle */
 #themeToggle {
-  position: absolute;
-  top: 14px;
-  right: 14px;
+  position: fixed;
+  top: 18px;
+  right: 18px;
   z-index: 11000;
   font-size: 28px;
   background: transparent;
@@ -328,8 +321,8 @@ button:hover,
     padding: 15px 18px;
   }
   #themeToggle {
-    top: 14px;
-    right: 10px;
+    top: 66px;
+    right: 14px;
     font-size: 26px;
   }
   button, 
