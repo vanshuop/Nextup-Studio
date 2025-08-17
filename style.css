@@ -252,21 +252,6 @@ button:hover,
   margin-bottom: 8px;
   color: var(--accent-color);
 }
-
-/* 🌙☀️ Sun/Moon Theme Toggle: FINAL fixed */
-#themeToggle {
-  position: fixed;
-  top: 12px;       /* Desktop: top-right corner */
-  right: 12px;
-  z-index: 11000;
-  font-size: 28px;
-  background: transparent;
-  border: none;
-  color: var(--accent-color);
-  cursor: pointer;
-  transition: color 0.3s;
-}
-
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -322,12 +307,6 @@ button:hover,
     max-width: none;
     padding: 15px 18px;
   }
-  /* Mobile: toggle sidebar ke neeche */
-  #themeToggle {
-    top: 65px;
-    right: 12px;
-    font-size: 26px;
-  }
   button, 
   .main-content button, 
   #gameChoice button, 
@@ -345,8 +324,7 @@ button:hover,
     margin: 10px 0;
   }
 }
-
-/* Floating Play Button (Journey) */
+/* Floating Play Button (Journey, if needed) */
 .audio-button {
   position: fixed;
   bottom: 20px;
