@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Nextup Studio</title>
+  <meta name="description" content="Nextup Studio is the official website of Vanshu Agarwal. Explore original music, Minecraft content, games, and more." />
+  <link rel="stylesheet" href="style.css" />
+  <script src="https://accounts.google.com/gsi/client" async defer></script>
+  <style>
+    :root {
+      --bg-color: #121212;
+      --text-color: #f0f0f0;
+      --accent-color: #00bcd4;
+      --btn-bg: #00bcd4;
+      --btn-text: #121212;
+      --btn-hover-bg: #0097a7;
+      --popup-bg: #222;
+      --sidebar-bg: #1e1e1e;
+      --sidebar-text: #f0f0f0;
+      --sidebar-active-bg: #00bcd4;
+      --sidebar-active-text: #121212;
+    }
+    .light {
+      --bg-color: #f9f9f9;
+      --text-color: #121212;
+      --accent-color: #007b91;
+      --btn-bg: #007b91;
+      --btn-text: #f9f9f9;
+      --btn-hover-bg: #005f6a;
+      --popup-bg: #ddd;
+      --sidebar-bg: #eaeaea;
+      --sidebar-text: #121212;
+      --sidebar-active-bg: #007b91;
+      --sidebar-active-text: #f9f9f9;
+    }
+    /* Global Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      min-height: 100vh;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      display: flex;
+      flex-direction: column;
+    }
+    /* Layout */
+    .layout {
+      display: flex;
+      flex: 1;
+      min-height: 100vh;
+    }
+    /* Sidebar */
+    .sidebar {
+      width: 220px;
+      background-color: var(--sidebar-bg);
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      color: var(--sidebar-text);
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      overflow-y: auto;
+      transition: background-color 0.4s ease;
+      z-index: 1000;
+    }
+    .sidebar h2 {
+      color: var(--accent-color);
+      margin-bottom: 20px;
+      font-weight: 700;
+      font-size: 1.5rem;
+      user-select: none;
+    }
+    .sidebar a {
+      color: var(--sidebar-text);
+      text-decoration: none;
+      padding: 12px 15px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 1rem;
+      transition: background-color 0.3s ease, color 0.3s ease;
+      user-select: none;
+    }
+    .sidebar a.active,
+    .sidebar a:hover {
+      background-color: var(--sidebar-active-bg);
+      color: var(--sidebar-active-text);
+      font-weight: 700;
+    }
+    /* Main Content */
+    .main-content {
+      margin-left: 220px;
+      padding: 40px 30px;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 900px;
+      min-height: 100vh;
+      transition: color 0.4s ease;
+    }
+    h1 {
+      font-size: 2.5rem;
+      margin-bottom: 15px;
+      user-select: none;
+    }
+    p, ul {
+      font-size: 1.125rem;
+      line-height: 1.6;
+      user-select: text;
+    }
+    ul {
+      margin-top: 15px;
+      margin-bottom: 25px;
+      padding-left: 20px;
+    }
+    ul li {
+      margin-bottom: 10px;
+    }
+    strong {
+      color: var(--accent-color);
+    }
+    /* Social Buttons */
+    .social-buttons {
+      margin-top: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+    }
+    .social-buttons a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 24px;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 17px;
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      user-select: none;
+      width: 260px;
+      justify-content: center;
+    }
+    .social-buttons a:hover {
+      transform: scale(1.07);
+      opacity: 0.85;
+    }
+    /* Specific colors */
+    .whatsapp { background-color: #25D366; }
+    .youtube { background-color: #FF0000; }
+    .instagram { background-color: #E1306C; }
+    /* Music Controls */
+    #musicControl {
+      display: flex;
+      justify-content: center;
+      margin: 25px 0 40px;
+      gap: 15px;
+    }
+    #musicControl button {
+      padding: 12px 28px;
+      border: none;
+      border-radius: 30px;
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      font-weight: 700;
+      font-size: 16px;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+    #musicControl button:hover {
+      background-color: var(--btn-hover-bg);
+      transform: scale(1.05);
+    }
+    /* Username prompt */
+    #usernamePrompt {
+      display: none;
+      margin-top: 30px;
+      text-align: center;
+      user-select: none;
+    }
+    #usernameInput {
+      padding: 12px 18px;
+      border-radius: 10px;
+      border: 2px solid var(--btn-bg);
+      outline: none;
+      font-size: 16px;
+      margin-right: 12px;
+      width: 220px;
+      transition: border-color 0.3s ease;
+      background: var(--sidebar-bg);
+      color: var(--text-color);
+      user-select: text;
+    }
+    #usernameInput:focus {
+      border-color: var(--btn-hover-bg);
+    }
+    #setUsernameBtn {
+      padding: 12px 24px;
+      border: none;
+      border-radius: 30px;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      user-select: none;
+    }
+    #setUsernameBtn:hover {
+      opacity: 0.9;
+      transform: scale(1.05);
+    }
+    /* Welcome user display */
+    #welcomeUser {
+      text-align: center;
+      margin-top: 25px;
+      color: var(--btn-bg);
+      font-weight: 700;
+      font-size: 1.2rem;
+      user-select: none;
+    }
+    /* Logout button container */
+    #logoutContainer {
+      text-align: center;
+      margin-top: 20px;
+    }
+    #logoutBtn {
+      padding: 12px 26px;
+      border: none;
+      border-radius: 30px;
+      background-color: #f44336;
+      color: white;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+    #logoutBtn:hover {
+      opacity: 0.85;
+      transform: scale(1.05);
+    }
+    /* Popup Notification */
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--popup-bg);
+      color: var(--text-color);
+      padding: 20px 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+      animation: fadeout 12s forwards;
+      font-weight: 600;
+      max-width: 320px;
+      user-select: none;
+    }
+    .popup a {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+    @keyframes fadeout {
+      0% {opacity: 1;}
+      85% {opacity: 1;}
+      100% {opacity: 0;}
+    }
+    /* Secret Link */
+    .secret-link {
+      text-align: center;
+      margin-top: 50px;
+      font-size: 13px;
+      opacity: 0.35;
+      user-select: none;
+    }
+    .secret-link a {
+      color: inherit;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .secret-link a:hover {
+      text-decoration: underline;
+      opacity: 0.6;
+    }
+    /* Google login container */
+    .google-login {
+      display: flex;
+      justify-content: center;
+      margin-top: 38px;
+    }
+    /* Light/Dark toggle button */
+    #themeToggle {
+      position: fixed;
+      top: 18px;
+      right: 18px;
+      background: transparent;
+      border: none;
+      font-size: 28px;
+      cursor: pointer;
+      color: var(--accent-color);
+      transition: color 0.3s ease;
+      user-select: none;
+      z-index: 11000;
+    }
+    #themeToggle:hover {
+      color: var(--btn-hover-bg);
+    }
+
+    /* Responsive */
+    @media(max-width:768px) {
+      .sidebar {
+        position: relative;
+        width: 100%;
+        height: auto;
+        flex-direction: row;
+        padding: 10px 15px;
+        justify-content: space-around;
+      }
+      .sidebar h2 {
+        display: none;
+      }
+      .sidebar a {
+        padding: 10px 12px;
+        font-size: 14px;
+        margin: 0 5px;
+        border-radius: 20px;
+      }
+      .main-content {
+        margin-left: 0;
+        padding: 25px 20px 40px;
+        max-width: 100%;
+      }
+      #usernameInput {
+        width: 140px;
+        margin-right: 8px;
+      }
+      .social-buttons a {
+        width: 180px;
+        font-size: 15px;
+        padding: 12px 20px;
+        justify-content: center;
+      }
+      #musicControl {
+        flex-direction: column;
+        gap: 12px;
+      }
+      #musicControl button {
+        width: 100%;
+      }
+      .popup {
+        right: 10px;
+        left: 10px;
+        bottom: 20px;
+        max-width: none;
+        padding: 15px 18px;
+      }
+      #themeToggle {
+        top: 12px;
+        right: 12px;
+        font-size: 24px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Light/Dark Mode Toggle -->
+  <button id="themeToggle" aria-label="Toggle light and dark mode" title="Toggle light and dark mode">🌙</button>
+
+  <!-- Background music -->
+  <audio id="bgMusic" src="music/Music.mp3" loop></audio>
+
+  <div class="layout">
+    <nav class="sidebar" aria-label="Primary">
+      <h2>Nextup Studio</h2>
+      <a href="index.html" class="active" aria-current="page">Home</a>
+      <a href="yt.html">YouTube</a>
+      <a href="journey.html">My Journey</a>
+      <a href="game.html">Game</a>
+    </nav>
+
+    <main class="main-content">
+      <h1>👋 Welcome to Nextup Studio</h1>
+      <p>This is the official site of <strong>Vanshu Agarwal</strong>. Here you’ll find:</p>
+      <ul>
+        <li>🎵 Original Songs</li>
+        <li>🎮 Minecraft Shorts & Gameplay</li>
+        <li>🧠 Mind Relax Game</li>
+        <li>📈 My Life Journey and Milestones</li>
+      </ul>
+      <p>Stay connected with me through Instagram, YouTube, and WhatsApp!</p>
+
+      <!-- Google Login Button -->
+      <div class="google-login" id="googleLoginBtnContainer" aria-label="Google Sign-in Button"></div>
+
+      <!-- Username prompt -->
+      <div id="usernamePrompt" role="region" aria-live="polite" aria-atomic="true">
+        <input type="text" id="usernameInput" placeholder="Choose a username" aria-label="Choose a username" />
+        <button id="setUsernameBtn">Set Username</button>
+      </div>
+
+      <!-- Welcome user display -->
+      <div id="welcomeUser" aria-live="polite" aria-atomic="true"></div>
+
+      <!-- Logout button -->
+      <div id="logoutContainer" aria-label="Logout Button Container"></div>
+
+      <!-- Music play/pause controls -->
+      <div id="musicControl" role="region" aria-label="Background music controls">
+        <button id="playMusicBtn">▶ Play Music</button>
+        <button id="pauseMusicBtn">◼ Pause Music</button>
+      </div>
+
+      <!-- Secret Vault Link -->
+      <p class="secret-link">
+        Some <a href="vault.html" aria-label="Open secret vault">secrets</a> are better left unspoken...
+      </p>
+
+      <!-- Social Buttons -->
+      <div class="social-buttons" aria-label="Social media links">
+        <a class="whatsapp" href="https://wa.me/919412104618" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">📱 Chat on WhatsApp</a>
+        <a class="youtube" href="https://www.youtube.com/@nextupstudioyt" target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube">▶️ Subscribe on YouTube</a>
+        <a class="instagram" href="https://www.instagram.com/vanshu_ag_72" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">📷 Follow on Instagram</a>
+      </div>
+    </main>
+  </div>
+
+  <div class="popup" role="alert" aria-live="assertive">
+    🔔 New! "Skyveil - The Echoes Beyond" <br />
+    Watch it here: <a href="https://youtu.be/6-JN1GLXdgY?feature=shared" target="_blank" rel="noopener noreferrer">Click to Watch</a>
+  </div>
+
+  <script>
+    const CLIENT_ID = "455141367100-f2jev8v887uer781j5ajg326375bud0h.apps.googleusercontent.com";
+
+    const welcomeDiv = document.getElementById('welcomeUser');
+    const usernamePrompt = document.getElementById('usernamePrompt');
+    const usernameInput = document.getElementById('usernameInput');
+    const setUsernameBtn = document.getElementById('setUsernameBtn');
+    const loginContainer = document.getElementById('googleLoginBtnContainer');
+    const logoutContainer = document.getElementById('logoutContainer');
+    const bgMusic = document.getElementById('bgMusic');
+    const playMusicBtn = document.getElementById('playMusicBtn');
+    const pauseMusicBtn = document.getElementById('pauseMusicBtn');
+    const themeToggle = document.getElementById('themeToggle');
+
+    // Music control
+    playMusicBtn.addEventListener('click', () => {
+      bgMusic.play();
+    });
+    pauseMusicBtn.addEventListener('click', () => {
+      bgMusic.pause();
+    });
+
+    // Load saved user
+    let savedUser = JSON.parse(localStorage.getItem('nextupUser'));
+    if(savedUser){
+      welcomeDiv.textContent = `👋 Welcome, ${savedUser.username}!`;
+      addLogoutButton();
+    }
+
+    // Google identity callback
+    let tempUser = null;
+    function handleCredentialResponse(response){
+      const base64Url = response.credential.split('.')[1];
+      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+      const user = JSON.parse(atob(base64));
+
+      tempUser = user;
+      loginContainer.style.display = 'none';
+      usernamePrompt.style.display = 'block';
+    }
+
+    window.onload = () => {
+      // Theme load from localStorage
+      const savedTheme = localStorage.getItem('nextupTheme');
+      if(savedTheme === 'light'){
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+
+      if(!savedUser){
+        google.accounts.id.initialize({
+          client_id: CLIENT_ID,
+          callback: handleCredentialResponse
+        });
+        google.accounts.id.renderButton(
+          loginContainer,
+          { theme: "outline", size: "large", text: "signin_with", shape:"pill" }
+        );
+      }
+    };
+
+    // Username set
+    setUsernameBtn.addEventListener('click', () => {
+      const username = usernameInput.value.trim();
+      if(!username){
+        alert("Please enter a username!");
+        return;
+      }
+      const finalUser = {
+        googleId: tempUser.sub,
+        email: tempUser.email,
+        name: tempUser.name,
+        username: username
+      };
+      localStorage.setItem('nextupUser', JSON.stringify(finalUser));
+      welcomeDiv.textContent = `👋 Welcome, ${username}!`;
+      usernamePrompt.style.display = 'none';
+      addLogoutButton();
+    });
+
+    function addLogoutButton(){
+      logoutContainer.innerHTML = `<button id="logoutBtn">Logout</button>`;
+      document.getElementById('logoutBtn').addEventListener('click', () => {
+        localStorage.removeItem('nextupUser');
+        location.reload();
+      });
+    }
+
+    // Theme toggle button click
+    themeToggle.addEventListener('click', () => {
+      if(document.body.classList.contains('light')){
+        document.body.classList.remove('light');
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('nextupTheme', 'dark');
+      } else {
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('nextupTheme', 'light');
+      }
+    });
+  </script>
+</body>
+</html>
