@@ -6,21 +6,23 @@
   <title>Games - Nextup Studio</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    .main-content button {
-      margin-bottom: 12px;
-    }
-    .file-block {
-      background: rgba(255,255,255,0.05);
-      padding: 18px;
-      margin: 18px 0;
-      border-radius: 8px;
-      word-wrap: break-word;
+    /* Extra visual polish for game container on small screens */
+    .main-content {
+      width: 100%;
+      max-width: 500px;
+      margin-left: auto;
+      margin-right: auto;
     }
     @media (max-width: 768px) {
       .main-content {
-        margin-top: 60px;
-        margin-left: 0;
-        padding: 20px 10px;
+        padding: 16px 6px;
+        max-width: 99vw;
+      }
+      .main-content h1 {
+        font-size: 1.4rem;
+      }
+      .main-content p {
+        font-size: 1rem;
       }
     }
   </style>
@@ -38,7 +40,6 @@
     </nav>
     <main class="main-content">
       <h1 id="gameTitle">Choose a Game to Play</h1>
-
       <div id="gameChoice">
         <p>Which game do you want to play?</p>
         <button onclick="loadGame('quiz')">Quiz Game</button>
@@ -165,7 +166,7 @@
       const q = quizData[currentQuestion];
       container.innerHTML = `<div style="max-width:600px;margin:auto;background:${getComputedStyle(document.body).getPropertyValue('--sidebar-bg')};padding:20px;border-radius:10px;text-align:left;">
         <h3>${q.question}</h3>
-        ${q.options.map(opt => `<button style="width:100%;margin:8px 0;" onclick="checkQuizAnswer('${opt}')">${opt}</button>`).join('')}
+        ${q.options.map(opt => `<button onclick="checkQuizAnswer('${opt}')">${opt}</button>`).join('')}
       </div>`;
     }
 
