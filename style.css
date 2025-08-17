@@ -260,6 +260,7 @@ strong {
   transform: scale(1.05);
 }
 
+/* Popup */
 .popup {
   position: fixed;
   bottom: 30px;
@@ -306,31 +307,27 @@ strong {
   margin-top: 38px;
 }
 
-/* Modern, rounded, colored BUTTONS everywhere */
+/* Modern, colored, rounded BUTTONS for every page and esp. game.html */
 button, 
 .main-content button, 
 #gameChoice button, 
 #gameContainer button, 
 #leaderboard button {
-  padding: 14px 0;
-  margin-bottom: 12px;
+  display: block;
+  width: 100%;
+  padding: 15px 0;
+  margin: 12px 0;
   border: none;
   border-radius: 30px;
   background: var(--btn-bg);
   color: var(--btn-text);
   font-weight: 700;
-  font-size: 17px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.14);
+  font-size: 18px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
   transition: background 0.3s, color 0.3s, transform 0.2s;
-  user-select: none;
   cursor: pointer;
-  width: 100%;
-  min-width: 0;
-  margin-left: 0;
-  margin-right: 0;
   outline: none;
 }
-
 button:hover, 
 .main-content button:hover,
 #gameChoice button:hover,
@@ -340,7 +337,6 @@ button:hover,
   color: #fff;
   transform: scale(1.03);
 }
-
 .file-block {
   background: rgba(255, 255, 255, 0.05);
   padding: 18px;
@@ -353,7 +349,6 @@ button:hover,
   margin-bottom: 8px;
   color: var(--accent-color);
 }
-
 /* Theme Toggle (Sun/Moon) */
 #themeToggle {
   position: fixed;
@@ -436,9 +431,8 @@ button:hover,
   #gameChoice button, 
   #gameContainer button, 
   #leaderboard button {
-    width: 100% !important;
     font-size: 16px;
-    min-width: 0;
+    padding: 14px 0;
   }
   .main-content hr {
     margin-left: 0;
