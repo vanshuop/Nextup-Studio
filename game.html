@@ -1,0 +1,485 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Games - Nextup Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .layout {
+      display: flex;
+      min-height: 100vh;
+    }
+    .sidebar {
+      width: 220px;
+      background: var(--sidebar-bg);
+      padding: 20px;
+      box-sizing: border-box;
+      position: fixed;
+      height: 100vh;
+      overflow-y: auto;
+      top: 0;
+      left: 0;
+      z-index: 1000;
+      color: var(--sidebar-text);
+    }
+    .sidebar h2 {
+      color: var(--accent-color);
+      text-align: center;
+      user-select: none;
+    }
+    .sidebar a {
+      display: block;
+      color: var(--accent-color);
+      padding: 12px 15px;
+      text-decoration: none;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      font-weight: 600;
+      transition: background-color 0.3s ease;
+      user-select: none;
+    }
+    .sidebar a.active, .sidebar a:hover {
+      background: var(--btn-bg);
+      color: var(--btn-text);
+      font-weight: 700;
+    }
+    .main-content {
+      margin-left: 220px;
+      padding: 30px 25px;
+      flex-grow: 1;
+      box-sizing: border-box;
+      text-align: center;
+      min-height: 100vh;
+    }
+    h1#gameTitle {
+      margin-bottom: 20px;
+      user-select: none;
+    }
+    button {
+      background: var(--btn-bg);
+      border: none;
+      padding: 14px 24px;
+      border-radius: 30px;
+      margin: 10px 8px;
+      cursor: pointer;
+      font-weight: 700;
+      color: var(--btn-text);
+      font-size: 16px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+      user-select: none;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+    button:hover {
+      background: var(--btn-hover-bg);
+      color: #fff;
+      transform: scale(1.05);
+    }
+    #leaderboard {
+      max-width: 400px;
+      margin: 30px auto 0;
+      background: var(--popup-bg);
+      padding: 20px;
+      border-radius: 12px;
+      color: var(--accent-color);
+      text-align: left;
+      display: none;
+      box-shadow: 0 0 15px rgba(0, 188, 212, 0.5);
+      user-select: none;
+    }
+    #leaderboardList li {
+      margin-bottom: 8px;
+    }
+    input[type="text"],
+    input[type="number"] {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      font-size: 16px;
+      width: 80%;
+      margin-right: 10px;
+      box-sizing: border-box;
+      color: var(--text-color);
+      background: var(--sidebar-bg);
+      user-select: text;
+      transition: border 0.3s ease;
+      outline: none;
+    }
+    input[type="text"]:focus,
+    input[type="number"]:focus {
+      border: 2px solid var(--btn-bg);
+    }
+    #nameInputSection {
+      margin-top: 15px;
+      user-select: none;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: 60px;
+        position: fixed;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding: 0 10px;
+        z-index: 1000;
+      }
+      .sidebar h2 {
+        display: none;
+      }
+      .sidebar a {
+        margin: 0 8px;
+        padding: 8px 14px;
+        font-size: 14px;
+        white-space: nowrap;
+        border-radius: 20px;
+      }
+      .main-content {
+        margin-left: 0;
+        margin-top: 60px;
+        padding: 20px 15px;
+      }
+      input[type="text"],
+      input[type="number"] {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="themeToggle" aria-label="Toggle light and dark mode" title="Toggle light and dark mode">🌙</button>
+
+  <div class="layout">
+    <nav class="sidebar" aria-label="Primary">
+      <h2>Nextup Studio</h2>
+      <a href="index.html">Home</a>
+      <a href="yt.html">YouTube</a>
+      <a href="journey.html">My Journey</a>
+      <a href="game.html" class="active" aria-current="page">Game</a>
+    </nav>
+
+    <main class="main-content">
+      <h1 id="gameTitle">Choose a Game to Play</h1>
+
+      <div id="gameChoice">
+        <p>Which game do you want to play?</p>
+        <button onclick="loadGame('quiz')">Quiz Game</button>
+        <button onclick="loadGame('hideSeek')">Hide and Seek</button>
+        <button onclick="loadGame('ropeBridge')">Rope Bridge</button>
+        <button onclick="loadGame('reactionTest')">Reaction Time Test</button>
+        <hr style="margin: 20px 0; border-color: var(--btn-bg);" />
+        <button id="showLeaderboardBtn" onclick="showLeaderboard()">Show Leaderboard</button>
+        <div id="leaderboard">
+          <h3>Leaderboard - Top Scores</h3>
+          <ol id="leaderboardList"></ol>
+          <button id="closeLeaderboardBtn" onclick="hideLeaderboard()">Close Leaderboard</button>
+        </div>
+      </div>
+
+      <div id="gameContainer"></div>
+    </main>
+  </div>
+
+  <script>
+    // User info from localStorage
+    const savedUserObj = JSON.parse(localStorage.getItem('nextupUser'));
+    const currentUserName = savedUserObj ? savedUserObj.username : null;
+
+    // Quiz Data
+    const quizData = [
+      { question: "Minecraft mein Nether ka main portal kaise banate hain?", options: ["Obsidian frame + Flint and Steel", "Wooden frame + Torch", "Stone frame + Pickaxe", "Diamond frame + Fire Charge"], answer: "Obsidian frame + Flint and Steel" },
+      { question: "AI ka full form kya hai?", options: ["Artificial Intelligence", "Automatic Input", "Android Interface", "Auto Identification"], answer: "Artificial Intelligence" },
+      { question: "YouTube par sabse zyada subscribers wala channel kaun hai?", options: ["T-Series", "PewDiePie", "Cocomelon", "MrBeast"], answer: "MrBeast" },
+      { question: "Squid Game mein guard ke mask par kaun sa shape hota hai?", options: ["Circle", "Triangle", "Square", "Star"], answer: "Triangle" },
+      { question: "Minecraft mein Creeper kisse dur rehta hai?", options: ["Cat", "Wolf", "Water", "Lava"], answer: "Cat" }
+    ];
+
+    let currentQuestion = 0, score = 0;
+
+    function loadGame(game) {
+      document.getElementById('leaderboard').style.display = 'none';
+      document.getElementById('gameChoice').style.display = 'none';
+      document.getElementById('gameContainer').style.display = 'block';
+      document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
+      const titleMap = {
+        quiz: 'Quiz Game',
+        hideSeek: 'Hide and Seek',
+        ropeBridge: 'Rope Bridge',
+        reactionTest: 'Reaction Time Test'
+      };
+      document.getElementById('gameTitle').textContent = titleMap[game];
+      if (game === 'quiz') startQuiz();
+      else if (game === 'hideSeek') loadHideSeek();
+      else if (game === 'ropeBridge') loadRopeBridge();
+      else if (game === 'reactionTest') loadReactionTest();
+    }
+
+    function showGameChoice() {
+      document.getElementById('gameChoice').style.display = 'block';
+      document.getElementById('gameContainer').style.display = 'none';
+      document.getElementById('gameTitle').textContent = 'Choose a Game to Play';
+    }
+
+    // Quiz Game
+    function startQuiz() {
+      currentQuestion = 0;
+      score = 0;
+      renderQuizQuestion();
+    }
+
+    function renderQuizQuestion() {
+      const container = document.getElementById("gameContainer");
+      if (currentQuestion >= quizData.length) {
+        container.innerHTML = `
+          <div style="max-width:600px;margin:auto;background:${getComputedStyle(document.body).getPropertyValue('--sidebar-bg')};padding:20px;border-radius:10px;text-align:center;">
+            <h2>Quiz Completed!</h2>
+            <p>Your Score: <strong>${score}/${quizData.length}</strong></p>
+            <button onclick="startQuiz()">Retry Quiz</button>
+            <button onclick="showGameChoice()">Back to Game Selection</button>
+            <div id="nameInputSection" style="margin-top:15px;"></div>
+          </div>`;
+        if (currentUserName) {
+          saveScore(currentUserName, score, "Quiz");
+          alert(`Score saved automatically for ${currentUserName}!`);
+          document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
+        } else {
+          const nameInputSection = document.getElementById('nameInputSection');
+          nameInputSection.innerHTML = `
+            <input type="text" id="playerName" placeholder="Enter your name" />
+            <button id="submitNameBtn">Submit Score</button>`;
+          document.getElementById('submitNameBtn').onclick = () => {
+            const name = document.getElementById('playerName').value.trim();
+            if (!name) {
+              alert('Please enter your name');
+              return;
+            }
+            saveScore(name, score, "Quiz");
+            alert('Score saved! Check leaderboard.');
+            nameInputSection.innerHTML = '';
+          };
+        }
+        return;
+      }
+      const q = quizData[currentQuestion];
+      container.innerHTML = `<div style="max-width:600px;margin:auto;background:${getComputedStyle(document.body).getPropertyValue('--sidebar-bg')};padding:20px;border-radius:10px;text-align:left;">
+        <h3>${q.question}</h3>
+        ${q.options.map(opt => `<button style="width:100%;margin:8px 0;" onclick="checkQuizAnswer('${opt}')">${opt}</button>`).join('')}
+      </div>`;
+    }
+
+    function checkQuizAnswer(selected) {
+      if (selected === quizData[currentQuestion].answer) score++;
+      currentQuestion++;
+      renderQuizQuestion();
+    }
+
+    // Hide and Seek Game
+    function loadHideSeek() {
+      const container = document.getElementById("gameContainer");
+      container.innerHTML = `<div style="max-width:600px;margin:auto;background:${getComputedStyle(document.body).getPropertyValue('--sidebar-bg')};padding:20px;border-radius:10px;text-align:center;">
+        <p>Click the button to see if you got found!</p>
+        <button id="hideSeekBtn">Check Hide Status</button>
+        <p id="hideSeekResult" style="margin-top:15px;"></p>
+        <div id="hideSeekNameInput" style="margin-top:15px;"></div>
+        <button onclick="loadHideSeek()" style="margin-top:15px;">Restart</button>
+        <button onclick="showGameChoice()" style="margin-top:15px;">Back to Game Selection</button>
+      </div>`;
+      document.getElementById('hideSeekBtn').onclick = () => {
+        const resultEl = document.getElementById('hideSeekResult');
+        const nameInputEl = document.getElementById('hideSeekNameInput');
+        nameInputEl.innerHTML = '';
+        const found = Math.random() < 0.5;
+        if (found) {
+          resultEl.textContent = 'Oh no! You got found! 😢';
+        } else {
+          resultEl.textContent = 'You are still hidden! 🎉';
+          askNameAndSaveScore(1, 'Hide and Seek', 'hideSeekNameInput');
+        }
+      };
+    }
+
+    // Rope Bridge Game
+    function loadRopeBridge() {
+      const container = document.getElementById("gameContainer");
+      container.innerHTML = `<div style="max-width:600px;margin:auto;background:${getComputedStyle(document.body).getPropertyValue('--sidebar-bg')};padding:20px;border-radius:10px;text-align:center;">
+        <p>Guess a safe step number (1 to 5) to cross the bridge.</p>
+        <input id="stepInput" type="number" min="1" max="5" placeholder="Step number" />
+        <button id="ropeBridgeBtn">Cross</button>
+        <p id="ropeBridgeResult" style="margin-top:15px;"></p>
+        <div id="ropeBridgeNameInput" style="margin-top:15px;"></div>
+        <button onclick="loadRopeBridge()" style="margin-top:15px;">Restart</button>
+        <button onclick="showGameChoice()" style="margin-top:15px;">Back to Game Selection</button>
+      </div>`;
+      document.getElementById('ropeBridgeBtn').onclick = () => {
+        const step = Number(document.getElementById('stepInput').value);
+        const resultEl = document.getElementById('ropeBridgeResult');
+        const nameInputEl = document.getElementById('ropeBridgeNameInput');
+        nameInputEl.innerHTML = '';
+        if (!step || step < 1 || step > 5) {
+          resultEl.textContent = 'Please enter a valid step between 1 and 5.';
+          return;
+        }
+        const safeStep = Math.floor(Math.random() * 5) + 1;
+        if (step === safeStep) {
+          resultEl.textContent = 'You crossed safely! 🎉';
+          askNameAndSaveScore(1, 'Rope Bridge', 'ropeBridgeNameInput');
+        } else {
+          resultEl.textContent = 'Oops! The bridge broke! You fell. 😢';
+        }
+      };
+    }
+
+    // Reaction Time Test
+    let reactionTimeout, reactionStart;
+
+    function loadReactionTest() {
+      const container = document.getElementById("gameContainer");
+      container.innerHTML = `<div style="max-width:600px;margin:auto;background:${getComputedStyle(document.body).getPropertyValue('--sidebar-bg')};padding:20px;border-radius:10px;text-align:center;">
+        <p>Wait for green, then click as fast as you can!</p>
+        <button id="reactionBtn" disabled style="background:red;color:white;padding:20px;font-size:20px;border:none;border-radius:10px;cursor:not-allowed;">Wait for green...</button>
+        <p id="reactionResult" style="margin-top:15px;"></p>
+        <div id="reactionNameInput" style="margin-top:15px;"></div>
+        <button id="startReactionBtn" style="margin-top:15px;">Start Test</button>
+        <button onclick="showGameChoice()" style="margin-top:15px;">Back to Game Selection</button>
+      </div>`;
+      document.getElementById('startReactionBtn').onclick = startReactionTest;
+    }
+
+    function startReactionTest() {
+      const btn = document.getElementById('reactionBtn');
+      const result = document.getElementById('reactionResult');
+      const nameInputEl = document.getElementById('reactionNameInput');
+      btn.style.backgroundColor = 'red';
+      btn.textContent = 'Wait for green...';
+      btn.disabled = true;
+      btn.style.cursor = 'not-allowed';
+      result.textContent = '';
+      nameInputEl.innerHTML = '';
+      const delay = Math.floor(Math.random() * 3000) + 2000;
+      reactionTimeout = setTimeout(() => {
+        btn.style.backgroundColor = 'green';
+        btn.textContent = 'Click Now!';
+        btn.disabled = false;
+        btn.style.cursor = 'pointer';
+        reactionStart = performance.now();
+        btn.onclick = () => {
+          const reactionTime = performance.now() - reactionStart;
+          btn.style.backgroundColor = varGet('--btn-bg');
+          btn.textContent = `Your reaction time: ${reactionTime.toFixed(2)} ms`;
+          btn.disabled = true;
+          btn.style.cursor = 'default';
+          btn.onclick = null;
+          const score = Math.max(0, Math.round(3000 - reactionTime));
+          askNameAndSaveScore(score, 'Reaction Test', 'reactionNameInput');
+        };
+      }, delay);
+      btn.onclick = () => {
+        clearTimeout(reactionTimeout);
+        btn.style.backgroundColor = 'red';
+        btn.textContent = 'Too Soon! Wait for green.';
+        btn.disabled = true;
+        btn.style.cursor = 'default';
+      };
+    }
+
+    // Helper to get CSS variable value
+    function varGet(name) {
+      return getComputedStyle(document.body).getPropertyValue(name).trim();
+    }
+
+    // Leaderboard management
+    function saveScore(name, score, game) {
+      let scores = JSON.parse(localStorage.getItem('leaderboardScores')) || [];
+      scores.push({ name, score, game });
+      scores.sort((a, b) => b.score - a.score);
+      if (scores.length > 10) scores = scores.slice(0, 10);
+      localStorage.setItem('leaderboardScores', JSON.stringify(scores));
+    }
+
+    function showLeaderboard() {
+      const leaderboardDiv = document.getElementById('leaderboard');
+      const list = document.getElementById('leaderboardList');
+      list.innerHTML = '';
+      let scores = JSON.parse(localStorage.getItem('leaderboardScores')) || [];
+      if (scores.length === 0) {
+        list.innerHTML = '<li>No scores yet.</li>';
+      } else {
+        scores.forEach(entry => {
+          const li = document.createElement('li');
+          li.textContent = `${entry.name} - ${entry.score} (${entry.game})`;
+          list.appendChild(li);
+        });
+      }
+      leaderboardDiv.style.display = 'block';
+      document.getElementById('showLeaderboardBtn').style.display = 'none';
+    }
+
+    function hideLeaderboard() {
+      document.getElementById('leaderboard').style.display = 'none';
+      document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
+    }
+
+    function askNameAndSaveScore(score, game, containerId) {
+      if (currentUserName) {
+        saveScore(currentUserName, score, game);
+        alert(`Score saved automatically for ${currentUserName}!`);
+        document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
+        return;
+      }
+      const container = document.getElementById(containerId);
+      if (container.querySelector('input')) return;
+      container.innerHTML = `
+        <input type="text" id="playerNameInput" placeholder="Enter your name" />
+        <button id="saveScoreBtn">Save Score</button>`;
+      document.getElementById('saveScoreBtn').onclick = () => {
+        const name = document.getElementById('playerNameInput').value.trim();
+        if (!name) {
+          alert('Please enter your name');
+          return;
+        }
+        saveScore(name, score, game);
+        alert('Score saved! Check leaderboard.');
+        container.innerHTML = '';
+        document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
+      };
+    }
+
+    // Theme toggle button handler
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      if (document.body.classList.contains('light')) {
+        document.body.classList.remove('light');
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('nextupTheme', 'dark');
+      } else {
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('nextupTheme', 'light');
+      }
+    });
+
+    window.onload = () => {
+      showGameChoice();
+      document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
+      const savedTheme = localStorage.getItem('nextupTheme');
+      if (savedTheme === 'light') {
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+    };
+  </script>
+</body>
+</html>
