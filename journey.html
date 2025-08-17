@@ -35,7 +35,6 @@
     audio {
       display: none;
     }
-    /* Daily Quote Style */
     .daily-quote {
       margin-top: 30px;
       padding: 15px 20px;
@@ -71,7 +70,8 @@
       </p>
       <p style="margin-top: 20px;">
         From childhood dreams to creating epic Minecraft moments and Squid Game shorts, my journey has been all about creativity and passion. 
-        I started experimenting with content at an early age and slowly built what is now known as <strong>Nextup Studio</strong>. 
+        I started experimenting with content at an early age and slowly built what is now known as 
+        <a href="secret.html" style="color: var(--accent-color); text-decoration: underline;" target="_blank"><strong>Nextup Studio</strong></a>.
         I'm excited to share every step of this path with you.
       </p>
 
@@ -81,17 +81,17 @@
     </main>
   </div>
 
-  <!-- Hidden Audio & Floating Play Button -->
+  <!-- Background Music and Floating Play Button -->
   <audio id="song-player" autoplay loop>
     <source src="music/Raat-Ka-Banda.mp3" type="audio/mpeg" />
     Your browser does not support the audio element.
   </audio>
-
   <button class="audio-button" onclick="togglePlayPause()" aria-label="Toggle background music">
     <img id="play-icon" src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Play" />
   </button>
 
   <script>
+    // Music play/pause with persistent state
     const player = document.getElementById('song-player');
     const playIcon = document.getElementById('play-icon');
     let savedTime = localStorage.getItem('musicTime');
