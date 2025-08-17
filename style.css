@@ -1,445 +1,202 @@
-:root {
-  --bg-color: #121212;
-  --text-color: #f0f0f0;
-  --accent-color: #00bcd4;
-  --btn-bg: #00bcd4;
-  --btn-text: #121212;
-  --btn-hover-bg: #0097a7;
-  --popup-bg: #222;
-  --sidebar-bg: #1e1e1e;
-  --sidebar-text: #f0f0f0;
-  --sidebar-active-bg: #00bcd4;
-  --sidebar-active-text: #121212;
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>My Journey - Nextup Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <meta name="description" content="Explore the personal journey of Vanshu Agarwal, the creator behind Nextup Studio." />
+  <style>
+    .audio-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--btn-bg);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      transition: background-color 0.3s ease;
+      user-select: none;
+      padding: 0;
+    }
+    .audio-button:hover {
+      background-color: var(--btn-hover-bg);
+    }
+    .audio-button img {
+      width: 26px;
+      height: 26px;
+    }
+    @media (max-width: 600px) {
+      .audio-button {
+        width: 40px;
+        height: 40px;
+        bottom: 12px;
+        right: 10px;
+      }
+      .audio-button img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+    /* Daily Quote Style */
+    .daily-quote {
+      margin-top: 30px;
+      padding: 15px 20px;
+      background: rgba(0, 188, 212, 0.1);
+      border-left: 4px solid var(--btn-bg);
+      font-style: italic;
+      font-size: 16px;
+      line-height: 1.5;
+      border-radius: 6px;
+      user-select: text;
+      max-width: 720px;
+    }
+    /* Sun/Moon toggle accurate position */
+    #themeToggle {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      z-index: 11000;
+      font-size: 28px;
+      background: transparent;
+      border: none;
+      color: var(--accent-color);
+      cursor: pointer;
+      transition: color 0.3s, top 0.3s, right 0.3s;
+    }
+    @media (max-width: 768px) {
+      #themeToggle {
+        top: 14px;
+        right: 10px;
+        font-size: 26px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Sun/Moon Toggle just after body -->
+  <button id="themeToggle" aria-label="Toggle light and dark mode" title="Toggle light and dark mode">🌙</button>
 
-.light {
-  --bg-color: #f9f9f9;
-  --text-color: #121212;
-  --accent-color: #007b91;
-  --btn-bg: #007b91;
-  --btn-text: #f9f9f9;
-  --btn-hover-bg: #005f6a;
-  --popup-bg: #ddd;
-  --sidebar-bg: #eaeaea;
-  --sidebar-text: #121212;
-  --sidebar-active-bg: #007b91;
-  --sidebar-active-text: #f9f9f9;
-}
+  <div class="layout">
+    <nav class="sidebar" aria-label="Primary">
+      <h2>Nextup Studio</h2>
+      <a href="index.html">Home</a>
+      <a href="yt.html">YouTube</a>
+      <a href="journey.html" class="active" aria-current="page">My Journey</a>
+      <a href="game.html">Game</a>
+    </nav>
 
-/* Global Reset */
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+    <main class="main-content">
+      <h1>My Life Journey</h1>
+      <p>
+        Welcome to my journey! I'm <strong>Vanshu Agarwal</strong> aka <em>Shrey</em>, the creator behind <strong>Nextup Studio</strong>. 
+        This page is all about my path — from my early interests to becoming a content creator blending AI, music, and gaming into one experience. 
+        Thanks for being a part of it!
+      </p>
+      <p style="margin-top: 20px;">
+        From childhood dreams to creating epic Minecraft moments and Squid Game shorts, my journey has been all about creativity and passion. 
+        I started experimenting with content at an early age and slowly built what is now known as 
+        <a href="secret.html" style="color: var(--accent-color); text-decoration: underline;" target="_blank"><strong>Nextup Studio</strong></a>.
+        I'm excited to share every step of this path with you.
+      </p>
 
-body {
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: var(--bg-color);
-  color: var(--text-color);
-  min-height: 100vh;
-  transition: background-color 0.4s ease, color 0.4s ease;
-  display: flex;
-  flex-direction: column;
-}
+      <div class="daily-quote" id="dailyQuote" aria-live="polite" aria-atomic="true">
+        Loading today's quote...
+      </div>
+    </main>
+  </div>
 
-/* Layout */
-.layout {
-  display: flex;
-  flex: 1;
-  min-height: 100vh;
-}
+  <!-- Background Music and Floating Play Button -->
+  <audio id="song-player" autoplay loop>
+    <source src="music/Raat-Ka-Banda.mp3" type="audio/mpeg" />
+    Your browser does not support the audio element.
+  </audio>
+  <button class="audio-button" onclick="togglePlayPause()" aria-label="Toggle background music">
+    <img id="play-icon" src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Play" />
+  </button>
 
-/* Sidebar */
-.sidebar {
-  width: 220px;
-  background-color: var(--sidebar-bg);
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-  color: var(--sidebar-text);
-  position: fixed;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  overflow-y: auto;
-  transition: background-color 0.4s ease;
-  z-index: 1000;
-}
+  <script>
+    // Music play/pause with persistent state
+    const player = document.getElementById('song-player');
+    const playIcon = document.getElementById('play-icon');
+    let savedTime = localStorage.getItem('musicTime');
+    let isPaused = localStorage.getItem('musicPaused');
+    let isPlaying = true;
 
-.sidebar h2 {
-  color: var(--accent-color);
-  margin-bottom: 20px;
-  font-weight: 700;
-  font-size: 1.5rem;
-  user-select: none;
-}
+    if (savedTime) player.currentTime = parseFloat(savedTime);
+    if (isPaused === 'true') {
+      player.pause();
+      isPlaying = false;
+      playIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
+    } else {
+      player.play();
+      isPlaying = true;
+      playIcon.src = "https://cdn-icons-png.flaticon.com/512/1792/1792930.png";
+    }
 
-.sidebar a {
-  color: var(--sidebar-text);
-  text-decoration: none;
-  padding: 12px 15px;
-  border-radius: 8px;
-  font-weight: 600;
-  font-size: 1rem;
-  transition: background-color 0.3s ease, color 0.3s ease;
-  user-select: none;
-}
+    function togglePlayPause() {
+      if (isPlaying) {
+        player.pause();
+        playIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
+        localStorage.setItem('musicPaused', 'true');
+      } else {
+        player.play();
+        playIcon.src = "https://cdn-icons-png.flaticon.com/512/1792/1792930.png";
+        localStorage.setItem('musicPaused', 'false');
+      }
+      isPlaying = !isPlaying;
+    }
 
-.sidebar a.active,
-.sidebar a:hover {
-  background-color: var(--sidebar-active-bg);
-  color: var(--sidebar-active-text);
-  font-weight: 700;
-}
+    setInterval(() => {
+      localStorage.setItem('musicTime', player.currentTime);
+    }, 1000);
 
-/* Main Content */
-.main-content {
-  margin-left: 220px;
-  padding: 40px 30px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  max-width: 900px;
-  min-height: 100vh;
-  transition: color 0.4s ease;
-}
+    // Daily Quote System
+    const quotes = [
+      "Every great journey begins with a single step.",
+      "Your story is unique — make it worth telling.",
+      "Dream big, start small, but start today.",
+      "The harder the climb, the better the view.",
+      "Consistency beats talent when talent doesn't work hard.",
+      "Turn your can'ts into cans and dreams into plans.",
+      "In the middle of every difficulty lies opportunity.",
+      "Your future is created by what you do today, not tomorrow.",
+      "Small progress is still progress — keep going.",
+      "Don't wait for inspiration, be the inspiration."
+    ];
+    const todayIndex = new Date().getDate() % quotes.length;
+    document.getElementById("dailyQuote").innerText = quotes[todayIndex];
 
-h1 {
-  font-size: 2.5rem;
-  margin-bottom: 15px;
-  user-select: none;
-}
+    // Theme toggle code
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      if(document.body.classList.contains('light')){
+        document.body.classList.remove('light');
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('nextupTheme', 'dark');
+      } else {
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('nextupTheme', 'light');
+      }
+    });
 
-p,
-ul {
-  font-size: 1.125rem;
-  line-height: 1.6;
-  user-select: text;
-}
-
-ul {
-  margin-top: 15px;
-  margin-bottom: 25px;
-  padding-left: 20px;
-}
-
-ul li {
-  margin-bottom: 10px;
-}
-
-strong {
-  color: var(--accent-color);
-}
-
-/* Social Buttons */
-.social-buttons {
-  margin-top: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 20px;
-}
-
-.social-buttons a {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 24px;
-  border-radius: 30px;
-  font-weight: 700;
-  font-size: 17px;
-  text-decoration: none;
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  transition: transform 0.3s ease, opacity 0.3s ease;
-  user-select: none;
-  width: 260px;
-  justify-content: center;
-}
-
-.social-buttons a:hover {
-  transform: scale(1.07);
-  opacity: 0.85;
-}
-
-.whatsapp { background-color: #25d366; }
-.youtube { background-color: #ff0000; }
-.instagram { background-color: #e1306c; }
-
-/* Music Controls */
-#musicControl {
-  display: flex;
-  justify-content: center;
-  margin: 25px 0 40px;
-  gap: 15px;
-}
-
-#musicControl button {
-  padding: 12px 28px;
-  border: none;
-  border-radius: 30px;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  transition: background-color 0.3s ease, transform 0.3s ease;
-  user-select: none;
-}
-
-#musicControl button:hover {
-  background-color: var(--btn-hover-bg);
-  transform: scale(1.05);
-}
-
-/* Username prompt */
-#usernamePrompt {
-  display: none;
-  margin-top: 30px;
-  text-align: center;
-  user-select: none;
-}
-#usernameInput {
-  padding: 12px 18px;
-  border-radius: 10px;
-  border: 2px solid var(--btn-bg);
-  outline: none;
-  font-size: 16px;
-  margin-right: 12px;
-  width: 220px;
-  transition: border-color 0.3s ease;
-  background: var(--sidebar-bg);
-  color: var(--text-color);
-}
-#usernameInput:focus {
-  border-color: var(--btn-hover-bg);
-}
-#setUsernameBtn {
-  padding: 12px 24px;
-  border: none;
-  border-radius: 30px;
-  background-color: var(--btn-bg);
-  color: var(--btn-text);
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.25s ease, transform 0.25s ease;
-  user-select: none;
-}
-#setUsernameBtn:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}
-#welcomeUser {
-  text-align: center;
-  margin-top: 25px;
-  color: var(--btn-bg);
-  font-weight: 700;
-  font-size: 1.2rem;
-  user-select: none;
-}
-#logoutContainer {
-  text-align: center;
-  margin-top: 20px;
-}
-#logoutBtn {
-  padding: 12px 26px;
-  border: none;
-  border-radius: 30px;
-  background-color: #f44336;
-  color: white;
-  font-weight: 700;
-  cursor: pointer;
-  transition: opacity 0.3s ease, transform 0.3s ease;
-  user-select: none;
-}
-#logoutBtn:hover {
-  opacity: 0.85;
-  transform: scale(1.05);
-}
-
-/* Popup */
-.popup {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  background-color: var(--popup-bg);
-  color: var(--text-color);
-  padding: 20px 24px;
-  border-radius: 10px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.4);
-  z-index: 9999;
-  animation: fadeout 12s forwards;
-  font-weight: 600;
-  max-width: 320px;
-  user-select: none;
-}
-.popup a {
-  color: var(--accent-color);
-  text-decoration: underline;
-}
-@keyframes fadeout {
-  0% { opacity: 1; }
-  85% { opacity: 1; }
-  100% { opacity: 0; }
-}
-.secret-link {
-  text-align: center;
-  margin-top: 50px;
-  font-size: 13px;
-  opacity: 0.35;
-  user-select: none;
-}
-.secret-link a {
-  color: inherit;
-  text-decoration: none;
-  cursor: pointer;
-}
-.secret-link a:hover {
-  text-decoration: underline;
-  opacity: 0.6;
-}
-.google-login {
-  display: flex;
-  justify-content: center;
-  margin-top: 38px;
-}
-
-/* Modern, colored, rounded BUTTONS for every page and esp. game.html */
-button, 
-.main-content button, 
-#gameChoice button, 
-#gameContainer button, 
-#leaderboard button {
-  display: block;
-  width: 100%;
-  padding: 15px 0;
-  margin: 12px 0;
-  border: none;
-  border-radius: 30px;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  font-weight: 700;
-  font-size: 18px;
-  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
-  transition: background 0.3s, color 0.3s, transform 0.2s;
-  cursor: pointer;
-  outline: none;
-}
-button:hover, 
-.main-content button:hover,
-#gameChoice button:hover,
-#gameContainer button:hover, 
-#leaderboard button:hover {
-  background: var(--btn-hover-bg);
-  color: #fff;
-  transform: scale(1.03);
-}
-.file-block {
-  background: rgba(255, 255, 255, 0.05);
-  padding: 18px;
-  margin: 18px 0;
-  border-radius: 8px;
-  word-wrap: break-word;
-}
-.file-block strong {
-  display: block;
-  margin-bottom: 8px;
-  color: var(--accent-color);
-}
-/* Theme Toggle (Sun/Moon) */
-#themeToggle {
-  position: fixed;
-  top: 18px;
-  right: 18px;
-  z-index: 11000;
-  font-size: 28px;
-  background: transparent;
-  border: none;
-  color: var(--accent-color);
-  cursor: pointer;
-  transition: color 0.3s ease, top 0.3s ease;
-}
-
-/* RESPONSIVE STYLES - For Mobile/Tablet */
-@media (max-width: 768px) {
-  .sidebar {
-    width: 100%;
-    height: 60px;
-    position: fixed;
-    top: 0;
-    left: 0;
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    padding: 0 10px;
-    z-index: 1000;
-    background: var(--sidebar-bg);
-  }
-  .sidebar h2 {
-    display: none;
-  }
-  .sidebar a {
-    margin: 0 8px;
-    padding: 8px 14px;
-    font-size: 14px;
-    white-space: nowrap;
-    border-radius: 20px;
-  }
-  .main-content {
-    margin-left: 0;
-    margin-top: 60px;
-    padding: 20px 10px;
-    max-width: 100%;
-  }
-  #usernameInput {
-    width: 140px;
-    margin-right: 8px;
-  }
-  .social-buttons a {
-    width: 180px;
-    font-size: 15px;
-    padding: 12px 20px;
-    justify-content: center;
-  }
-  #musicControl {
-    flex-direction: column;
-    gap: 12px;
-  }
-  #musicControl button {
-    width: 100%;
-  }
-  .popup {
-    right: 10px;
-    left: 10px;
-    bottom: 20px;
-    max-width: none;
-    padding: 15px 18px;
-  }
-  #themeToggle {
-    top: 75px;
-    right: 18px;
-    font-size: 26px;
-  }
-  button, 
-  .main-content button, 
-  #gameChoice button, 
-  #gameContainer button, 
-  #leaderboard button {
-    font-size: 16px;
-    padding: 14px 0;
-  }
-  .main-content hr {
-    margin-left: 0;
-    margin-right: 0;
-  }
-  .file-block {
-    padding: 12px;
-    margin: 10px 0;
-  }
-}
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('nextupTheme');
+      if(savedTheme === 'light'){
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+    };
+  </script>
+</body>
+</html>
