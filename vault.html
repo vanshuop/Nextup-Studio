@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Vault | Nextup Studio</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-color);
+      margin: 0;
+      padding: 0;
+      text-align: center;
+      transition: background-color 0.4s ease, color 0.4s ease;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    h1, h2 {
+      color: var(--btn-bg);
+      user-select: none;
+      margin-top: 30px;
+    }
+
+    .vault-container {
+      padding: 20px;
+      max-width: 900px;
+      margin: 30px auto;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    input[type="password"] {
+      padding: 14px 18px;
+      width: 60%;
+      max-width: 480px;
+      border: 2px solid var(--btn-bg);
+      background: var(--sidebar-bg);
+      border-radius: 8px;
+      margin-top: 20px;
+      font-size: 16px;
+      color: var(--text-color);
+      outline: none;
+      transition: border-color 0.3s ease;
+      user-select: text;
+    }
+
+    input[type="password"]:focus {
+      border-color: var(--btn-hover-bg);
+    }
+
+    button {
+      padding: 14px 26px;
+      margin-left: 12px;
+      border: none;
+      border-radius: 30px;
+      background-color: var(--btn-bg);
+      color: var(--btn-text);
+      font-weight: 700;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s ease, transform 0.3s ease;
+      user-select: none;
+    }
+
+    button:hover {
+      background-color: var(--btn-hover-bg);
+      transform: scale(1.05);
+    }
+
+    .hidden-content {
+      display: none;
+      margin-top: 40px;
+      text-align: left;
+      background: var(--sidebar-bg);
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 0 20px rgba(0, 188, 212, 0.4);
+      max-width: 900px;
+      width: 100%;
+      user-select: text;
+    }
+
+    .file-block {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 18px;
+      margin: 18px 0;
+      border-radius: 8px;
+      word-wrap: break-word;
+    }
+
+    .file-block strong {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 700;
+      color: var(--accent-color);
+    }
+
+    a {
+      color: var(--btn-bg);
+      text-decoration: none;
+      user-select: text;
+      word-break: break-word;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+
+    img,
+    video {
+      max-width: 100%;
+      margin-top: 12px;
+      border-radius: 10px;
+      display: block;
+    }
+
+    @media (max-width: 600px) {
+      input[type="password"] {
+        width: 80%;
+      }
+      button {
+        margin-left: 8px;
+        padding: 12px 20px;
+        font-size: 14px;
+      }
+      .vault-container {
+        padding: 15px;
+      }
+      .hidden-content {
+        padding: 20px;
+      }
+      .file-block {
+        padding: 12px;
+        margin: 12px 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <button id="themeToggle" aria-label="Toggle light and dark mode" title="Toggle light and dark mode" style="position:fixed;top:18px;right:18px;z-index:11000;font-size:28px;background:transparent;border:none;color:var(--btn-bg);cursor:pointer;">🌙</button>
+
+  <div class="vault-container">
+    <h1>🔒 Welcome to the Vault</h1>
+    <p>Enter the passcode to unlock hidden content.</p>
+    <input type="password" id="passcode" placeholder="Enter passcode" aria-label="Enter passcode" />
+    <button onclick="unlockVault()">Unlock</button>
+
+    <div class="hidden-content" id="vaultContent" aria-live="polite" aria-atomic="true">
+      <h2>💎 Hidden Content</h2>
+
+      <div class="file-block">
+        <strong>1. Minecraft Skin</strong>
+        <a href="video/1.png" download>Download Skin</a>
+        <img src="video/1.png" alt="Minecraft Skin" />
+      </div>
+
+      <div class="file-block">
+        <strong>2. Minecraft Subscribe Video</strong>
+        <a href="video/2.mp4" download>Download Video</a>
+        <video controls src="video/2.mp4"></video>
+      </div>
+
+      <div class="file-block">
+        <strong>3. My Editing App</strong>
+        <a href="https://s1.spiderdown.com/Filmora/Filmora%20v14.9.11%20%28Pro%29.apk" target="_blank" rel="noopener noreferrer">Download APK</a>
+      </div>
+
+      <div class="file-block">
+        <strong>🎥 Top Video Editing</strong>
+        <a href="https://s1.spiderdown.com/ShotCut/ShotCut%20v2.17.5%20%28Premium%29.apk" target="_blank" rel="noopener noreferrer">Download APK</a>
+      </div>
+
+      <div class="file-block">
+        <strong>4. My Editing Assets</strong>
+        <a href="https://drive.google.com/drive/folders/1C3-5UJ6aeTXC9LnXdvXwMM8iT87e9zfZ" target="_blank" rel="noopener noreferrer">Open Google Drive Folder</a>
+      </div>
+
+      <div class="file-block">
+        <strong>5. Fav Telegram Channel</strong>
+        <a href="https://t.me/techinsiderashish1" target="_blank" rel="noopener noreferrer">https://t.me/techinsiderashish1</a>
+      </div>
+
+      <div class="file-block">
+        <strong>6. App with unlimited entertainment anime and more</strong>
+        <a href="https://cloud.9mod.com/MovieBox/MovieBox%20v3.0.05.0711.03%20%28Premium%29.apk" target="_blank" rel="noopener noreferrer">Download APK</a>
+      </div>
+
+      <div class="file-block">
+        <strong>7. Minecraft Patch</strong>
+        <a href="https://www.mediafire.com/file/45r8i1tyg9879g1/MCPE-Patched-Music-1.21.94.apk/file?dkey=su4bgnlq3zz&r=73" target="_blank" rel="noopener noreferrer">Download APK</a>
+      </div>
+
+      <div class="file-block">
+        <strong>8. 🎬✨ Unlimited Anime App</strong>
+        <a href="video/base.apk" download>Download APK</a>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function unlockVault() {
+      const pass = document.getElementById('passcode').value.trim();
+      if (pass === 'opbolte') {
+        document.getElementById('vaultContent').style.display = 'block';
+      } else {
+        alert('❌ Wrong passcode!');
+      }
+    }
+
+    // Theme toggle logic
+    const themeToggle = document.getElementById('themeToggle');
+    themeToggle.addEventListener('click', () => {
+      if(document.body.classList.contains('light')){
+        document.body.classList.remove('light');
+        themeToggle.textContent = '🌙';
+        localStorage.setItem('nextupTheme', 'dark');
+      } else {
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+        localStorage.setItem('nextupTheme', 'light');
+      }
+    });
+
+    window.onload = () => {
+      const savedTheme = localStorage.getItem('nextupTheme');
+      if(savedTheme === 'light'){
+        document.body.classList.add('light');
+        themeToggle.textContent = '☀️';
+      } else {
+        themeToggle.textContent = '🌙';
+      }
+    };
+  </script>
+</body>
+</html>
