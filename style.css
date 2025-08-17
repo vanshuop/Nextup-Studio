@@ -143,29 +143,6 @@ strong {
 .whatsapp { background-color: #25d366; }
 .youtube { background-color: #ff0000; }
 .instagram { background-color: #e1306c; }
-#musicControl {
-  display: flex;
-  justify-content: center;
-  margin: 25px 0 40px;
-  gap: 15px;
-}
-#musicControl button {
-  padding: 12px 28px;
-  border: none;
-  border-radius: 30px;
-  background: var(--btn-bg);
-  color: var(--btn-text);
-  font-weight: 700;
-  font-size: 16px;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-  transition: background-color 0.3s, transform 0.3s;
-  user-select: none;
-}
-#musicControl button:hover {
-  background-color: var(--btn-hover-bg);
-  transform: scale(1.05);
-}
 button, 
 .main-content button, 
 #gameChoice button, 
@@ -211,11 +188,6 @@ button:hover,
   text-decoration: underline;
   opacity: 0.6;
 }
-.google-login {
-  display: flex;
-  justify-content: center;
-  margin-top: 38px;
-}
 .popup {
   position: fixed;
   bottom: 30px;
@@ -252,6 +224,33 @@ button:hover,
   margin-bottom: 8px;
   color: var(--accent-color);
 }
+/* Floating Music Play/Pause Audio Button */
+.audio-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: var(--btn-bg);
+  border: none;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  z-index: 9999;
+  transition: background-color 0.3s;
+  user-select: none;
+  padding: 0;
+}
+.audio-button:hover {
+  background-color: var(--btn-hover-bg);
+}
+.audio-button img {
+  width: 26px;
+  height: 26px;
+}
 @media (max-width: 768px) {
   .sidebar {
     width: 100%;
@@ -283,22 +282,11 @@ button:hover,
     padding: 20px 10px;
     max-width: 100%;
   }
-  #usernameInput {
-    width: 140px;
-    margin-right: 8px;
-  }
   .social-buttons a {
     width: 180px;
     font-size: 15px;
     padding: 12px 20px;
     justify-content: center;
-  }
-  #musicControl {
-    flex-direction: column;
-    gap: 12px;
-  }
-  #musicControl button {
-    width: 100%;
   }
   .popup {
     right: 10px;
@@ -306,6 +294,16 @@ button:hover,
     bottom: 20px;
     max-width: none;
     padding: 15px 18px;
+  }
+  .audio-button {
+    width: 40px;
+    height: 40px;
+    bottom: 12px;
+    right: 10px;
+  }
+  .audio-button img {
+    width: 20px;
+    height: 20px;
   }
   button, 
   .main-content button, 
@@ -322,44 +320,5 @@ button:hover,
   .file-block {
     padding: 12px;
     margin: 10px 0;
-  }
-}
-/* Floating Play Button (Journey, if needed) */
-.audio-button {
-  position: fixed;
-  bottom: 20px;
-  right: 20px;
-  background-color: var(--btn-bg);
-  border: none;
-  border-radius: 50%;
-  width: 48px;
-  height: 48px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-  z-index: 9999;
-  transition: background-color 0.3s;
-  user-select: none;
-  padding: 0;
-}
-.audio-button:hover {
-  background-color: var(--btn-hover-bg);
-}
-.audio-button img {
-  width: 26px;
-  height: 26px;
-}
-@media (max-width: 600px) {
-  .audio-button {
-    width: 40px;
-    height: 40px;
-    bottom: 12px;
-    right: 10px;
-  }
-  .audio-button img {
-    width: 20px;
-    height: 20px;
   }
 }
