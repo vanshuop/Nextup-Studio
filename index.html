@@ -6,6 +6,132 @@
   <title>Nextup Studio</title>
   <meta name="description" content="Nextup Studio is the official website of Vanshu Agarwal. Explore original music, Minecraft content, games, and more." />
   <link rel="stylesheet" href="style.css" />
+  <style>
+    /* Social Buttons: Horizontal on desktop, vertical on mobile, modern colors */
+    .social-buttons.horizontal-social {
+      display: flex;
+      flex-direction: row;
+      gap: 18px;
+      justify-content: center;
+      margin-top: 35px;
+      margin-bottom: 24px;
+    }
+    .social-buttons.horizontal-social a {
+      flex: 1 1 auto;
+      min-width: 140px;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      gap: 8px;
+      padding: 14px 0;
+      border-radius: 30px;
+      font-weight: 700;
+      font-size: 17px;
+      text-decoration: none;
+      color: #fff;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.13);
+      transition: transform 0.22s, opacity 0.22s, box-shadow 0.22s;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+    .social-buttons.horizontal-social a:hover, .social-buttons.horizontal-social a:focus {
+      opacity: 0.89;
+      transform: scale(1.05);
+      box-shadow: 0 6px 18px rgba(0,0,0,0.18);
+    }
+    .whatsapp { background-color: #25d366; }
+    .youtube  { background-color: #ff0000; }
+    .instagram { background-color: #e1306c; }
+
+    @media (max-width: 700px) {
+      .social-buttons.horizontal-social {
+        flex-direction: column;
+        gap: 14px;
+        margin-top: 30px;
+      }
+      .social-buttons.horizontal-social a {
+        width: 100%;
+        max-width: none;
+        font-size: 16px;
+        padding: 14px 0;
+      }
+    }
+
+    /* Notification popup: only 3 seconds on screen! */
+    @keyframes fadeout {
+      0% { opacity: 1; }
+      70% { opacity: 1; }
+      100% { opacity: 0; }
+    }
+    .popup {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background-color: var(--popup-bg);
+      color: var(--text-color);
+      padding: 20px 24px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.4);
+      z-index: 9999;
+      animation: fadeout 3s forwards;
+      font-weight: 600;
+      max-width: 320px;
+      user-select: none;
+    }
+    .popup a {
+      color: var(--accent-color);
+      text-decoration: underline;
+    }
+    @media (max-width: 768px) {
+      .popup {
+        right: 10px;
+        left: 10px;
+        bottom: 20px;
+        max-width: none;
+        padding: 15px 18px;
+      }
+    }
+    /* Floating Music Play/Pause Audio Button (matches journey.html) */
+    .audio-button {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: var(--btn-bg);
+      border: none;
+      border-radius: 50%;
+      width: 48px;
+      height: 48px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      z-index: 9999;
+      transition: background-color 0.3s;
+      user-select: none;
+      padding: 0;
+    }
+    .audio-button:hover {
+      background-color: var(--btn-hover-bg);
+    }
+    .audio-button img {
+      width: 26px;
+      height: 26px;
+    }
+    @media (max-width: 600px) {
+      .audio-button {
+        width: 40px;
+        height: 40px;
+        bottom: 12px;
+        right: 10px;
+      }
+      .audio-button img {
+        width: 20px;
+        height: 20px;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="layout">
@@ -28,17 +154,21 @@
       <p>
         Stay connected with me through Instagram, YouTube, and WhatsApp!
       </p>
-
       <!-- Secret Vault Link -->
       <p class="secret-link">
         Some <a href="vault.html" aria-label="Open secret vault">secrets</a> are better left unspoken...
       </p>
-
-      <!-- Social Buttons -->
-      <div class="social-buttons" aria-label="Social media links">
-        <a class="whatsapp" href="https://wa.me/919412104618" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">📱 Chat on WhatsApp</a>
-        <a class="youtube" href="https://www.youtube.com/@nextupstudioyt" target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube">▶️ Subscribe on YouTube</a>
-        <a class="instagram" href="https://www.instagram.com/vanshu_ag_72" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">📷 Follow on Instagram</a>
+      <!-- Modern Social Buttons Row -->
+      <div class="social-buttons horizontal-social" aria-label="Social media links">
+        <a class="whatsapp" href="https://wa.me/919412104618" target="_blank" rel="noopener noreferrer" aria-label="Chat on WhatsApp">
+          <span style="font-size:1.25em;">📱</span> WhatsApp
+        </a>
+        <a class="youtube" href="https://www.youtube.com/@nextupstudioyt" target="_blank" rel="noopener noreferrer" aria-label="Subscribe on YouTube">
+          <span style="font-size:1.25em;">▶️</span> YouTube
+        </a>
+        <a class="instagram" href="https://www.instagram.com/vanshu_ag_72" target="_blank" rel="noopener noreferrer" aria-label="Follow on Instagram">
+          <span style="font-size:1.25em;">📷</span> Instagram
+        </a>
       </div>
     </main>
   </div>
@@ -49,7 +179,7 @@
     <img id="play-icon" src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Play"/>
   </button>
   <script>
-    // Floating Play/Pause button logic (just like journey page)
+    // Floating Play/Pause button logic
     const player = document.getElementById('bgMusic');
     const playIcon = document.getElementById('play-icon');
     let savedTime = localStorage.getItem('musicTime');
@@ -85,7 +215,7 @@
     }, 1000);
   </script>
 
-  <!-- Popup (optional, keep or remove as you wish) -->
+  <!-- Popup Notification - disappears after 3 secondes! -->
   <div class="popup" role="alert" aria-live="assertive">
     🔔 New! "Skyveil - The Echoes Beyond" <br />
     Watch it here: <a href="https://youtu.be/6-JN1GLXdgY?feature=shared" target="_blank" rel="noopener noreferrer">Click to Watch</a>
