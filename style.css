@@ -252,7 +252,7 @@ button:hover,
   margin-bottom: 8px;
   color: var(--accent-color);
 }
-/* Sun/Moon Theme Toggle */
+/* Sun/Moon Theme Toggle: FINAL, always perfect */
 #themeToggle {
   position: fixed;
   top: 18px;
@@ -321,8 +321,8 @@ button:hover,
     padding: 15px 18px;
   }
   #themeToggle {
-    top: 66px;
-    right: 14px;
+    top: 70px;  /* Adjust upward if needed for your own nav bar height */
+    right: 16px;
     font-size: 26px;
   }
   button, 
