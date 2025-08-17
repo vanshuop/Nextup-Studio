@@ -6,11 +6,8 @@
   <title>Nextup Studio</title>
   <meta name="description" content="Nextup Studio is the official website of Vanshu Agarwal. Explore original music, Minecraft content, games, and more." />
   <link rel="stylesheet" href="style.css" />
-  <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-  <!-- Sun/Moon Theme Toggle Button, OUTSIDE all containers -->
-  <button id="themeToggle" aria-label="Toggle theme" title="Toggle theme">🌙</button>
   <div class="layout">
     <nav class="sidebar" aria-label="Primary">
       <h2>Nextup Studio</h2>
@@ -28,28 +25,9 @@
         <li>🧠 Mind Relax Game</li>
         <li>📈 My Life Journey and Milestones</li>
       </ul>
-      <p>Stay connected with me through Instagram, YouTube, and WhatsApp!</p>
-
-      <!-- Google Login Button -->
-      <div class="google-login" id="googleLoginBtnContainer" aria-label="Google Sign-in Button"></div>
-
-      <!-- Username prompt -->
-      <div id="usernamePrompt" role="region" aria-live="polite" aria-atomic="true">
-        <input type="text" id="usernameInput" placeholder="Choose a username" aria-label="Choose a username" />
-        <button id="setUsernameBtn">Set Username</button>
-      </div>
-
-      <!-- Welcome user display -->
-      <div id="welcomeUser" aria-live="polite" aria-atomic="true"></div>
-
-      <!-- Logout button -->
-      <div id="logoutContainer" aria-label="Logout Button Container"></div>
-
-      <!-- Music play/pause controls -->
-      <div id="musicControl" role="region" aria-label="Background music controls">
-        <button id="playMusicBtn">▶ Play Music</button>
-        <button id="pauseMusicBtn">◼ Pause Music</button>
-      </div>
+      <p>
+        Stay connected with me through Instagram, YouTube, and WhatsApp!
+      </p>
 
       <!-- Secret Vault Link -->
       <p class="secret-link">
@@ -65,112 +43,16 @@
     </main>
   </div>
 
-  <!-- Background music -->
+  <!-- Background music controls (optional) -->
   <audio id="bgMusic" src="music/Music.mp3" loop></audio>
+  <div id="musicControl" role="region" aria-label="Background music controls">
+    <button onclick="document.getElementById('bgMusic').play()">▶ Play Music</button>
+    <button onclick="document.getElementById('bgMusic').pause()">◼ Pause Music</button>
+  </div>
 
   <div class="popup" role="alert" aria-live="assertive">
     🔔 New! "Skyveil - The Echoes Beyond" <br />
     Watch it here: <a href="https://youtu.be/6-JN1GLXdgY?feature=shared" target="_blank" rel="noopener noreferrer">Click to Watch</a>
   </div>
-
-  <script>
-    const CLIENT_ID = "455141367100-f2jev8v887uer781j5ajg326375bud0h.apps.googleusercontent.com";
-
-    const welcomeDiv = document.getElementById('welcomeUser');
-    const usernamePrompt = document.getElementById('usernamePrompt');
-    const usernameInput = document.getElementById('usernameInput');
-    const setUsernameBtn = document.getElementById('setUsernameBtn');
-    const loginContainer = document.getElementById('googleLoginBtnContainer');
-    const logoutContainer = document.getElementById('logoutContainer');
-    const bgMusic = document.getElementById('bgMusic');
-    const playMusicBtn = document.getElementById('playMusicBtn');
-    const pauseMusicBtn = document.getElementById('pauseMusicBtn');
-    const themeToggle = document.getElementById('themeToggle');
-
-    // Music control
-    playMusicBtn.addEventListener('click', () => bgMusic.play());
-    pauseMusicBtn.addEventListener('click', () => bgMusic.pause());
-
-    // Load saved user
-    let savedUser = JSON.parse(localStorage.getItem('nextupUser'));
-    if(savedUser){
-      welcomeDiv.textContent = `👋 Welcome, ${savedUser.username}!`;
-      addLogoutButton();
-    }
-
-    // Google identity callback
-    let tempUser = null;
-    function handleCredentialResponse(response){
-      const base64Url = response.credential.split('.')[1];
-      const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
-      const user = JSON.parse(atob(base64));
-
-      tempUser = user;
-      loginContainer.style.display = 'none';
-      usernamePrompt.style.display = 'block';
-    }
-
-    window.onload = () => {
-      // Theme load from localStorage
-      const savedTheme = localStorage.getItem('nextupTheme');
-      if(savedTheme === 'light'){
-        document.body.classList.add('light');
-        themeToggle.textContent = '☀️';
-      } else {
-        themeToggle.textContent = '🌙';
-      }
-
-      if(!savedUser){
-        google.accounts.id.initialize({
-          client_id: CLIENT_ID,
-          callback: handleCredentialResponse
-        });
-        google.accounts.id.renderButton(
-          loginContainer,
-          { theme: "outline", size: "large", text: "signin_with", shape:"pill" }
-        );
-      }
-    };
-
-    // Username set
-    setUsernameBtn.addEventListener('click', () => {
-      const username = usernameInput.value.trim();
-      if(!username){
-        alert("Please enter a username!");
-        return;
-      }
-      const finalUser = {
-        googleId: tempUser.sub,
-        email: tempUser.email,
-        name: tempUser.name,
-        username: username
-      };
-      localStorage.setItem('nextupUser', JSON.stringify(finalUser));
-      welcomeDiv.textContent = `👋 Welcome, ${username}!`;
-      usernamePrompt.style.display = 'none';
-      addLogoutButton();
-    });
-
-    function addLogoutButton(){
-      logoutContainer.innerHTML = `<button id="logoutBtn">Logout</button>`;
-      document.getElementById('logoutBtn').addEventListener('click', () => {
-        localStorage.removeItem('nextupUser');
-        location.reload();
-      });
-    }
-
-    // Theme toggle button click
-    themeToggle.addEventListener('click', () => {
-      if(document.body.classList.contains('light')){
-        document.body.classList.remove('light');
-        themeToggle.textContent = '🌙';
-        localStorage.setItem('nextupTheme', 'dark');
-      } else {
-        document.body.classList.add('light');
-        themeToggle.textContent = '☀️';
-        localStorage.setItem('nextupTheme', 'light');
-      }
-    });
-  </script>
 </body>
 </html>
