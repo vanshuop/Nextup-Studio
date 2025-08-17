@@ -6,7 +6,6 @@
   <title>Games - Nextup Studio</title>
   <link rel="stylesheet" href="style.css" />
   <style>
-    /* Extra visual polish for game container on small screens */
     .main-content {
       width: 100%;
       max-width: 500px;
@@ -28,8 +27,6 @@
   </style>
 </head>
 <body>
-  <button id="themeToggle" aria-label="Toggle light and dark mode" title="Toggle light and dark mode">🌙</button>
-
   <div class="layout">
     <nav class="sidebar" aria-label="Primary">
       <h2>Nextup Studio</h2>
@@ -57,38 +54,8 @@
       <div id="gameContainer"></div>
     </main>
   </div>
-
   <script>
-    // Theme toggle button handler
-    const themeToggle = document.getElementById('themeToggle');
-    themeToggle.addEventListener('click', () => {
-      if (document.body.classList.contains('light')) {
-        document.body.classList.remove('light');
-        themeToggle.textContent = '🌙';
-        localStorage.setItem('nextupTheme', 'dark');
-      } else {
-        document.body.classList.add('light');
-        themeToggle.textContent = '☀️';
-        localStorage.setItem('nextupTheme', 'light');
-      }
-    });
-    // Load theme at startup
-    window.onload = () => {
-      showGameChoice();
-      document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
-      const savedTheme = localStorage.getItem('nextupTheme');
-      if (savedTheme === 'light') {
-        document.body.classList.add('light');
-        themeToggle.textContent = '☀️';
-      } else {
-        themeToggle.textContent = '🌙';
-      }
-    };
-    // User info from localStorage
-    const savedUserObj = JSON.parse(localStorage.getItem('nextupUser'));
-    const currentUserName = savedUserObj ? savedUserObj.username : null;
-
-    // Quiz Data
+    // ---- Minimal Game Logic ----
     const quizData = [
       { question: "Minecraft mein Nether ka main portal kaise banate hain?", options: ["Obsidian frame + Flint and Steel", "Wooden frame + Torch", "Stone frame + Pickaxe", "Diamond frame + Fire Charge"], answer: "Obsidian frame + Flint and Steel" },
       { question: "AI ka full form kya hai?", options: ["Artificial Intelligence", "Automatic Input", "Android Interface", "Auto Identification"], answer: "Artificial Intelligence" },
@@ -97,13 +64,12 @@
       { question: "Minecraft mein Creeper kisse dur rehta hai?", options: ["Cat", "Wolf", "Water", "Lava"], answer: "Cat" }
     ];
 
-    let currentQuestion = 0, score = 0;
+    let currentQuestion = 0, score = 0, currentUserName = "Player";
 
     function loadGame(game) {
       document.getElementById('leaderboard').style.display = 'none';
       document.getElementById('gameChoice').style.display = 'none';
       document.getElementById('gameContainer').style.display = 'block';
-      document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
       const titleMap = {
         quiz: 'Quiz Game',
         hideSeek: 'Hide and Seek',
@@ -139,28 +105,10 @@
             <p>Your Score: <strong>${score}/${quizData.length}</strong></p>
             <button onclick="startQuiz()">Retry Quiz</button>
             <button onclick="showGameChoice()">Back to Game Selection</button>
-            <div id="nameInputSection" style="margin-top:15px;"></div>
+            <div style="margin-top:15px;">Score saved for <strong>${currentUserName}</strong>!</div>
           </div>`;
-        if (currentUserName) {
-          saveScore(currentUserName, score, "Quiz");
-          alert(`Score saved automatically for ${currentUserName}!`);
-          document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
-        } else {
-          const nameInputSection = document.getElementById('nameInputSection');
-          nameInputSection.innerHTML = `
-            <input type="text" id="playerName" placeholder="Enter your name" />
-            <button id="submitNameBtn">Submit Score</button>`;
-          document.getElementById('submitNameBtn').onclick = () => {
-            const name = document.getElementById('playerName').value.trim();
-            if (!name) {
-              alert('Please enter your name');
-              return;
-            }
-            saveScore(name, score, "Quiz");
-            alert('Score saved! Check leaderboard.');
-            nameInputSection.innerHTML = '';
-          };
-        }
+        saveScore(currentUserName, score, "Quiz");
+        document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
         return;
       }
       const q = quizData[currentQuestion];
@@ -183,20 +131,17 @@
         <p>Click the button to see if you got found!</p>
         <button id="hideSeekBtn">Check Hide Status</button>
         <p id="hideSeekResult" style="margin-top:15px;"></p>
-        <div id="hideSeekNameInput" style="margin-top:15px;"></div>
         <button onclick="loadHideSeek()" style="margin-top:15px;">Restart</button>
         <button onclick="showGameChoice()" style="margin-top:15px;">Back to Game Selection</button>
       </div>`;
       document.getElementById('hideSeekBtn').onclick = () => {
         const resultEl = document.getElementById('hideSeekResult');
-        const nameInputEl = document.getElementById('hideSeekNameInput');
-        nameInputEl.innerHTML = '';
         const found = Math.random() < 0.5;
         if (found) {
           resultEl.textContent = 'Oh no! You got found! 😢';
         } else {
           resultEl.textContent = 'You are still hidden! 🎉';
-          askNameAndSaveScore(1, 'Hide and Seek', 'hideSeekNameInput');
+          saveScore(currentUserName, 1, "Hide and Seek");
         }
       };
     }
@@ -209,15 +154,12 @@
         <input id="stepInput" type="number" min="1" max="5" placeholder="Step number" />
         <button id="ropeBridgeBtn">Cross</button>
         <p id="ropeBridgeResult" style="margin-top:15px;"></p>
-        <div id="ropeBridgeNameInput" style="margin-top:15px;"></div>
         <button onclick="loadRopeBridge()" style="margin-top:15px;">Restart</button>
         <button onclick="showGameChoice()" style="margin-top:15px;">Back to Game Selection</button>
       </div>`;
       document.getElementById('ropeBridgeBtn').onclick = () => {
         const step = Number(document.getElementById('stepInput').value);
         const resultEl = document.getElementById('ropeBridgeResult');
-        const nameInputEl = document.getElementById('ropeBridgeNameInput');
-        nameInputEl.innerHTML = '';
         if (!step || step < 1 || step > 5) {
           resultEl.textContent = 'Please enter a valid step between 1 and 5.';
           return;
@@ -225,7 +167,7 @@
         const safeStep = Math.floor(Math.random() * 5) + 1;
         if (step === safeStep) {
           resultEl.textContent = 'You crossed safely! 🎉';
-          askNameAndSaveScore(1, 'Rope Bridge', 'ropeBridgeNameInput');
+          saveScore(currentUserName, 1, "Rope Bridge");
         } else {
           resultEl.textContent = 'Oops! The bridge broke! You fell. 😢';
         }
@@ -241,7 +183,6 @@
         <p>Wait for green, then click as fast as you can!</p>
         <button id="reactionBtn" disabled style="background:red;color:white;padding:20px;font-size:20px;border:none;border-radius:10px;cursor:not-allowed;">Wait for green...</button>
         <p id="reactionResult" style="margin-top:15px;"></p>
-        <div id="reactionNameInput" style="margin-top:15px;"></div>
         <button id="startReactionBtn" style="margin-top:15px;">Start Test</button>
         <button onclick="showGameChoice()" style="margin-top:15px;">Back to Game Selection</button>
       </div>`;
@@ -251,13 +192,11 @@
     function startReactionTest() {
       const btn = document.getElementById('reactionBtn');
       const result = document.getElementById('reactionResult');
-      const nameInputEl = document.getElementById('reactionNameInput');
       btn.style.backgroundColor = 'red';
       btn.textContent = 'Wait for green...';
       btn.disabled = true;
       btn.style.cursor = 'not-allowed';
       result.textContent = '';
-      nameInputEl.innerHTML = '';
       const delay = Math.floor(Math.random() * 3000) + 2000;
       reactionTimeout = setTimeout(() => {
         btn.style.backgroundColor = 'green';
@@ -273,7 +212,7 @@
           btn.style.cursor = 'default';
           btn.onclick = null;
           const score = Math.max(0, Math.round(3000 - reactionTime));
-          askNameAndSaveScore(score, 'Reaction Test', 'reactionNameInput');
+          saveScore(currentUserName, score, "Reaction Test");
         };
       }, delay);
       btn.onclick = () => {
@@ -315,31 +254,6 @@
     function hideLeaderboard() {
       document.getElementById('leaderboard').style.display = 'none';
       document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
-    }
-
-    function askNameAndSaveScore(score, game, containerId) {
-      if (currentUserName) {
-        saveScore(currentUserName, score, game);
-        alert(`Score saved automatically for ${currentUserName}!`);
-        document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
-        return;
-      }
-      const container = document.getElementById(containerId);
-      if (container.querySelector('input')) return;
-      container.innerHTML = `
-        <input type="text" id="playerNameInput" placeholder="Enter your name" />
-        <button id="saveScoreBtn">Save Score</button>`;
-      document.getElementById('saveScoreBtn').onclick = () => {
-        const name = document.getElementById('playerNameInput').value.trim();
-        if (!name) {
-          alert('Please enter your name');
-          return;
-        }
-        saveScore(name, score, game);
-        alert('Score saved! Check leaderboard.');
-        container.innerHTML = '';
-        document.getElementById('showLeaderboardBtn').style.display = 'inline-block';
-      };
     }
   </script>
 </body>
