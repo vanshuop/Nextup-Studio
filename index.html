@@ -43,13 +43,49 @@
     </main>
   </div>
 
-  <!-- Background music controls (optional) -->
+  <!-- Floating Background Music Button -->
   <audio id="bgMusic" src="music/Music.mp3" loop></audio>
-  <div id="musicControl" role="region" aria-label="Background music controls">
-    <button onclick="document.getElementById('bgMusic').play()">▶ Play Music</button>
-    <button onclick="document.getElementById('bgMusic').pause()">◼ Pause Music</button>
-  </div>
+  <button class="audio-button" onclick="togglePlayPause()" aria-label="Toggle background music">
+    <img id="play-icon" src="https://cdn-icons-png.flaticon.com/512/727/727245.png" alt="Play"/>
+  </button>
+  <script>
+    // Floating Play/Pause button logic (just like journey page)
+    const player = document.getElementById('bgMusic');
+    const playIcon = document.getElementById('play-icon');
+    let savedTime = localStorage.getItem('musicTime');
+    let isPaused = localStorage.getItem('musicPaused');
+    let isPlaying = true;
 
+    if (savedTime) player.currentTime = parseFloat(savedTime);
+    if (isPaused === 'true') {
+      player.pause();
+      isPlaying = false;
+      playIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
+    } else {
+      player.play();
+      isPlaying = true;
+      playIcon.src = "https://cdn-icons-png.flaticon.com/512/1792/1792930.png";
+    }
+
+    function togglePlayPause() {
+      if (isPlaying) {
+        player.pause();
+        playIcon.src = "https://cdn-icons-png.flaticon.com/512/727/727245.png";
+        localStorage.setItem('musicPaused', 'true');
+      } else {
+        player.play();
+        playIcon.src = "https://cdn-icons-png.flaticon.com/512/1792/1792930.png";
+        localStorage.setItem('musicPaused', 'false');
+      }
+      isPlaying = !isPlaying;
+    }
+
+    setInterval(() => {
+      localStorage.setItem('musicTime', player.currentTime);
+    }, 1000);
+  </script>
+
+  <!-- Popup (optional, keep or remove as you wish) -->
   <div class="popup" role="alert" aria-live="assertive">
     🔔 New! "Skyveil - The Echoes Beyond" <br />
     Watch it here: <a href="https://youtu.be/6-JN1GLXdgY?feature=shared" target="_blank" rel="noopener noreferrer">Click to Watch</a>
